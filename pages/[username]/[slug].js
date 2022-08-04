@@ -8,7 +8,8 @@ import { firestore, getUserWithUsername, projectToJSON, auth } from '../../lib/f
 import { serverTimestamp, doc, getDocs, getDoc, setDoc, collectionGroup, query, limit, getFirestore, collection, where, orderBy } from 'firebase/firestore';
 import { useForm } from 'react-hook-form';
 import ImageUploader from '../../components/ImageUploader';
-
+import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 import Link from 'next/link';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
@@ -97,7 +98,7 @@ export default function Project(props) {
         {currentUser?.uid === project.uid && (
             <>
               <p>Add post here</p>
-              <PostForm project={project} username={username}  />
+              <PostForm project={project} username={username} />
             </>
           )}
         </div>
@@ -131,7 +132,7 @@ export default function Project(props) {
 }
 
 function PostForm({ project, username }) {
-  const preview=false; // todo
+  const [preview, setPreview] = useState(false);
 
   const { register, formState: { errors, isValid, isDirty }, handleSubmit, reset, watch } = useForm({ defaultValues: {}, mode: 'onChange' });
   const submitPost = async ({ content, published }) => {
@@ -158,13 +159,14 @@ function PostForm({ project, username }) {
   };
 
   return (
+    <>
+    <button onClick={() => setPreview(!preview)}>{preview ? 'Edit' : 'Preview'}</button>
     <form onSubmit={handleSubmit(submitPost)}>
       {preview && (
         <div className="card">
           <ReactMarkdown>{watch('content')}</ReactMarkdown>
         </div>
       )}
-
       <div className={preview ? styles.hidden : styles.controls}>
         <ImageUploader />
 
@@ -182,12 +184,13 @@ function PostForm({ project, username }) {
           <input className={styles.checkbox} type="checkbox" {...register('published', {})}/>
           <label>Published</label>
         </fieldset>
-
+        
         <button type="submit" className="btn-green" disabled={!isDirty || !isValid}>
           Save Changes
         </button>
       </div>
     </form>
+    </>
   );
 }
 

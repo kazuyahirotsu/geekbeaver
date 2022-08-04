@@ -1,27 +1,3 @@
-<!-- normal -->
-# firestore
-- usernames
-    - kazuya
-        "uid":random
-- users
-    - random
-        "username"
-        "displayName"
-        "photoURL"
-        - posts
-            - firstpost
-                "title":firstpost
-                "slug":firstpost
-                "content"
-                "heartCount"
-                "username"
-                "uid"
-                "updatedAt"
-                "createdAt"
-# storage
-- uploads
-
-
 <!-- target -->
 # firestore
 - usernames
@@ -51,3 +27,5 @@
                     "uid"
                     "updatedAt"
                     "createdAt"
+# storage
+- uploads
