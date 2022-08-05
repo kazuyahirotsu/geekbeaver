@@ -68,6 +68,8 @@ function CreateNewProject() {
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
       heartCount: 0,
+      viewCount: 0,
+      commentCount: 0,
     };
 
     await setDoc(ref, data);

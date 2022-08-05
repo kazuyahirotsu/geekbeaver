@@ -28,6 +28,7 @@ function ProjectItem({ project, admin = false }) {
           {wordCount} words. {minutesToRead} min read
         </span>
         <span className="push-left">💗 {project.heartCount || 0} Hearts</span>
+        <span>viewed {project.viewCount} times</span>
       </footer>
 
       {/* If admin view, show extra controls for user */}
