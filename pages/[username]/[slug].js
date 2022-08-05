@@ -82,7 +82,8 @@ export default function Project(props) {
   const { user: currentUser, username } = useContext(UserContext);
 
   return (
-    <main className={styles.container}>
+    // <main className={styles.container}>
+    <main>
       <Metatags title={project.title} description={project.title} />
       <div className="flex flex-col">
         
@@ -103,30 +104,6 @@ export default function Project(props) {
           )}
         </div>
       </div>
-      
-      <aside className="card">
-        <p>
-          <strong>{project.heartCount || 0} 🤍</strong>
-        </p>
-
-        <AuthCheck
-          fallback={
-            <Link href="/enter">
-              <button>💗 Sign Up</button>
-            </Link>
-          }
-        >
-          <HeartButton projectRef={projectRef} />
-        </AuthCheck>
-
-        {currentUser?.uid === project.uid && (
-          <>
-            <Link href={`/admin/${project.slug}`}>
-              <button className="btn-blue">Edit Project</button>
-            </Link>
-          </>
-        )}
-      </aside>
     </main>
   );
 }

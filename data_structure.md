@@ -4,11 +4,11 @@
     - kazuya
         "uid"
 - users
-    - random
+    - randomID
         "username"
         "displayName"
         "photoURL"
-        - project
+        - projects
             - firstproject
                 "title":firstproject
                 "slug":firstproject
@@ -18,14 +18,37 @@
                 "uid"
                 "updatedAt"
                 "createdAt"
-                - firstupdate
-                    "title":firstproject
-                    "slug":firstproject
-                    "content"
-                    "heartCount"
-                    "username"
+                "commentCount" <-todo
+                "viewedCount" <-todo
+                - comments <-todo
+                    - randomID
+                        "content"
+                        "username"
+                        "updatedAt"
+                        "createdAt"
+                - hearts
+                    - uid
+                        "uid"
+                - posts
+                    - firstupdate
+                        "slug":firstupdate
+                        "content"
+                        "heartCount"
+                        "username"
+                        "uid"
+                        "updatedAt"
+                        "createdAt"
+                        "commentCount" <-todo
+                        "viewedCount" <-todo
+        - liked <-todo
+            - projects
+                - randomID
                     "uid"
-                    "updatedAt"
-                    "createdAt"
+                    "slug"
+            - posts
+                - randomID
+                    "uid"
+                    "slug"
+
 # storage
 - uploads
