@@ -5,7 +5,7 @@ import AuthCheck from '../../components/AuthCheck';
 import Metatags from '../../components/Metatags';
 import { UserContext } from '../../lib/context';
 import { firestore, getUserWithUsername, projectToJSON, auth } from '../../lib/firebase';
-import { serverTimestamp, doc, getDocs, getDoc, setDoc, collectionGroup, query, limit, getFirestore, collection, where, orderBy } from 'firebase/firestore';
+import { serverTimestamp, doc, getDocs, getDoc, setDoc, collectionGroup, query, limit, getFirestore, collection, where, orderBy, updateDoc, increment } from 'firebase/firestore';
 import { useForm } from 'react-hook-form';
 import ImageUploader from '../../components/ImageUploader';
 import { useState } from 'react';
@@ -13,7 +13,7 @@ import ReactMarkdown from 'react-markdown';
 
 import Link from 'next/link';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import toast from 'react-hot-toast';
 import PostFeed from '../../components/PostFeed';
 
@@ -40,6 +40,7 @@ export async function getStaticProps({ params }) {
       limit(5)
     );
     posts = (await getDocs(postsQuery)).docs.map(projectToJSON);
+
   }
 
   return {
@@ -80,6 +81,15 @@ export default function Project(props) {
   const project = realtimeProject || props.project;
 
   const { user: currentUser, username } = useContext(UserContext);
+
+  
+  useEffect(() => {
+    console.log(projectRef)
+    updateDoc(projectRef, {
+      viewCount: increment(1)
+    });
+  }, []);
+
 
   return (
     // <main className={styles.container}>
@@ -126,6 +136,8 @@ function PostForm({ project, username }) {
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
       heartCount: 0,
+      viewCount: 0,
+      commentCount: 0,
     };
 
     await setDoc(ref, data);

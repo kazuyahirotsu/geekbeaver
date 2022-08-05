@@ -23,6 +23,7 @@ export default function ProjectContent({ project }) {
         on {createdAt.toISOString()}
       </span>
       <ReactMarkdown>{project?.content}</ReactMarkdown>
+      <span className="text-info">viewed {project.viewCount} times</span>
       <span className="push-left">💗 {project.heartCount || 0} Hearts</span>
       <AuthCheck
         fallback={
