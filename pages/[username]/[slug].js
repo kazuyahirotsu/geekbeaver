@@ -84,7 +84,6 @@ export default function Project(props) {
 
   
   useEffect(() => {
-    console.log(projectRef)
     updateDoc(projectRef, {
       viewCount: increment(1)
     });
@@ -101,18 +100,19 @@ export default function Project(props) {
           <ProjectContent project={project} />
         </section>
 
-        <div className="">
-          <PostFeed posts={props.posts} project={project}/>
-        </div>
-
         <div className="card">
         {currentUser?.uid === project.uid && (
             <>
-              <p>Add post here</p>
+              <p>Add new post</p>
               <PostForm project={project} username={username} />
             </>
           )}
         </div>
+
+        <div className="">
+          <PostFeed posts={props.posts} project={project}/>
+        </div>
+
       </div>
     </main>
   );
