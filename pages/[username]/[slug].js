@@ -16,6 +16,7 @@ import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { useEffect, useContext } from 'react';
 import toast from 'react-hot-toast';
 import PostFeed from '../../components/PostFeed';
+import Editor from '../../components/Editor';
 
 // SSG
 export async function getStaticProps({ params }) {
@@ -35,7 +36,6 @@ export async function getStaticProps({ params }) {
 
     const postsQuery = query(
       collection(getFirestore(), userDoc.ref.path, 'projects', slug, 'posts'),
-      where('published', '==', true),
       orderBy('createdAt', 'desc'),
       limit(5)
     );
@@ -81,7 +81,7 @@ export default function Project(props) {
   const project = realtimeProject || props.project;
 
   const { user: currentUser, username } = useContext(UserContext);
-
+  const postRef = doc(getFirestore(), 'users', project.uid, 'projects', project.slug, 'posts', String(props.posts.length)); // todo
   
   useEffect(() => {
     updateDoc(projectRef, {
@@ -104,7 +104,7 @@ export default function Project(props) {
         {currentUser?.uid === project.uid && (
             <>
               <p>Add new post</p>
-              <PostForm project={project} username={username} />
+              <Editor defaultValue={""} contentRef={postRef} newSlug={String(props.posts.length)} newPost={true} project={project}/>
             </>
           )}
         </div>
@@ -115,71 +115,6 @@ export default function Project(props) {
 
       </div>
     </main>
-  );
-}
-
-function PostForm({ project, username }) {
-  const [preview, setPreview] = useState(false);
-
-  const { register, formState: { errors, isValid, isDirty }, handleSubmit, reset, watch } = useForm({ defaultValues: {}, mode: 'onChange' });
-  const submitPost = async ({ content, published }) => {
-    const uid = auth.currentUser.uid;
-    const ref = doc(getFirestore(), 'users', uid, 'projects', project.slug, 'posts', "test"); // todo
-
-    // Tip: give all fields a default value here
-    const data = {
-      slug: "test", // todo
-      uid,
-      username,
-      published,
-      content,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-      heartCount: 0,
-      viewCount: 0,
-      commentCount: 0,
-    };
-
-    await setDoc(ref, data);
-
-    reset({ content, published });
-
-    toast.success('Post updated successfully!');
-  };
-
-  return (
-    <>
-    <button onClick={() => setPreview(!preview)}>{preview ? 'Edit' : 'Preview'}</button>
-    <form onSubmit={handleSubmit(submitPost)}>
-      {preview && (
-        <div className="card">
-          <ReactMarkdown>{watch('content')}</ReactMarkdown>
-        </div>
-      )}
-      <div className={preview ? styles.hidden : styles.controls}>
-        <ImageUploader />
-
-        <textarea
-         {...register('content', {
-            maxLength: { value: 20000, message: 'content is too long' },
-            minLength: { value: 10, message: 'content is too short' },
-            required: { value: true, message: 'content is required' },
-          })}>  
-        </textarea>
-
-        {errors.content && <p className="text-danger">{errors.content.message}</p>}
-
-        <fieldset>
-          <input className={styles.checkbox} type="checkbox" {...register('published', {})}/>
-          <label>Published</label>
-        </fieldset>
-        
-        <button type="submit" className="btn-green" disabled={!isDirty || !isValid}>
-          Save Changes
-        </button>
-      </div>
-    </form>
-    </>
   );
 }
 

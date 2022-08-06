@@ -3,6 +3,7 @@ import AuthCheck from '../../../components/AuthCheck';
 import { firestore, auth } from '../../../lib/firebase';
 import { serverTimestamp, doc, deleteDoc, updateDoc, getFirestore } from 'firebase/firestore';
 import ImageUploader from '../../../components/ImageUploader';
+import Editor from '../../../components/Editor'
 
 import { useState } from 'react';
 import { useRouter } from 'next/router';
@@ -36,8 +37,8 @@ function ProjectManager() {
           <section>
             <h1>{project.title}</h1>
             <p>ID: {project.slug}</p>
-
-            <ProjectForm projectRef={projectRef} defaultValues={project} preview={preview} />
+            <Editor defaultValue={project.content} contentRef={projectRef} />
+            {/* <ProjectForm projectRef={projectRef} defaultValues={project} preview={preview} /> */}
           </section>
 
           <aside>
@@ -57,14 +58,13 @@ function ProjectManager() {
 function ProjectForm({ defaultValues, projectRef, preview }) {
   const { register, formState: { errors, isValid, isDirty }, handleSubmit, reset, watch } = useForm({ defaultValues, mode: 'onChange' });
 
-  const updateProject = async ({ content, published }) => {
+  const updateProject = async ({ content }) => {
     await updateDoc(projectRef, {
       content,
-      published,
       updatedAt: serverTimestamp(),
     });
 
-    reset({ content, published });
+    reset({ content });
 
     toast.success('Project updated successfully!');
   };

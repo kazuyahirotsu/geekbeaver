@@ -5,6 +5,7 @@ import AuthCheck from '../components/AuthCheck';
 import { doc, getFirestore } from 'firebase/firestore';
 import { useContext } from 'react';
 import { UserContext } from '../lib/context';
+import Editor from '../components/Editor'
 
 // UI component for main project content
 export default function ProjectContent({ project }) {
@@ -14,6 +15,8 @@ export default function ProjectContent({ project }) {
 
   return (
     <div className="card">
+
+      {/* project content */}
       <h1>{project?.title}</h1>
       <span className="text-sm">
         Written by{' '}
@@ -22,8 +25,12 @@ export default function ProjectContent({ project }) {
         </Link>{' '}
         on {createdAt.toISOString()}
       </span>
-      <ReactMarkdown>{project?.content}</ReactMarkdown>
+      <Editor defaultValue={project.content} contentRef={projectRef} edit={false}/>
+
+      {/* view count */}
       <span className="text-info">viewed {project.viewCount} times</span>
+      
+      {/* hearts */}
       <span className="push-left">💗 {project.heartCount || 0} Hearts</span>
       <AuthCheck
         fallback={
@@ -34,7 +41,8 @@ export default function ProjectContent({ project }) {
       >
         <HeartButton projectRef={projectRef} />
       </AuthCheck>
-      {/* If admin view, show extra controls for user */}
+
+      {/* edit button for admin user */}
       {currentUser?.uid === project.uid && (
         <>
           <Link href={`/admin/${project.slug}`}>
@@ -42,6 +50,12 @@ export default function ProjectContent({ project }) {
           </Link>
         </>
       )}
+
+      {/* comment section */}
+      {/* show comment */}
+
+      {/* add comment */}
+      
     </div>
   );
 }
