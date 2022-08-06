@@ -100,14 +100,14 @@ export default function Project(props) {
           <ProjectContent project={project} />
         </section>
 
-        <div className="card">
+        
         {currentUser?.uid === project.uid && (
-            <>
+            <div className="card">
               <p>Add new post</p>
               <Editor defaultValue={""} contentRef={postRef} newSlug={String(date.getTime())} newPost={true} project={project}/>
-            </>
+            </div>
           )}
-        </div>
+        
 
         <div className="">
           <PostFeed posts={props.posts} project={project}/>
