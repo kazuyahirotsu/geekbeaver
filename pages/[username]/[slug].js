@@ -79,9 +79,9 @@ export default function Project(props) {
   const projectRef = doc(getFirestore(), props.path);
   const [realtimeProject] = useDocumentData(projectRef);
   const project = realtimeProject || props.project;
-
+  const date = new Date();
   const { user: currentUser, username } = useContext(UserContext);
-  const postRef = doc(getFirestore(), 'users', project.uid, 'projects', project.slug, 'posts', String(props.posts.length)); // todo
+  const postRef = doc(getFirestore(), 'users', project.uid, 'projects', project.slug, 'posts', String(date.getTime())); // todo
   
   useEffect(() => {
     updateDoc(projectRef, {
@@ -104,7 +104,7 @@ export default function Project(props) {
         {currentUser?.uid === project.uid && (
             <>
               <p>Add new post</p>
-              <Editor defaultValue={""} contentRef={postRef} newSlug={String(props.posts.length)} newPost={true} project={project}/>
+              <Editor defaultValue={""} contentRef={postRef} newSlug={String(date.getTime())} newPost={true} project={project}/>
             </>
           )}
         </div>

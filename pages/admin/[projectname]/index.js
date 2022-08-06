@@ -55,53 +55,6 @@ function ProjectManager() {
   );
 }
 
-function ProjectForm({ defaultValues, projectRef, preview }) {
-  const { register, formState: { errors, isValid, isDirty }, handleSubmit, reset, watch } = useForm({ defaultValues, mode: 'onChange' });
-
-  const updateProject = async ({ content }) => {
-    await updateDoc(projectRef, {
-      content,
-      updatedAt: serverTimestamp(),
-    });
-
-    reset({ content });
-
-    toast.success('Project updated successfully!');
-  };
-
-  return (
-    <form onSubmit={handleSubmit(updateProject)}>
-      {preview && (
-        <div className="card">
-          <ReactMarkdown>{watch('content')}</ReactMarkdown>
-        </div>
-      )}
-
-      <div className={preview ? styles.hidden : styles.controls}>
-        <ImageUploader />
-
-        <textarea
-         {...register('content', {
-            maxLength: { value: 20000, message: 'content is too long' },
-            minLength: { value: 10, message: 'content is too short' },
-            required: { value: true, message: 'content is required' },
-          })}>  
-        </textarea>
-
-        {errors.content && <p className="text-danger">{errors.content.message}</p>}
-
-        <fieldset>
-          <input className={styles.checkbox} type="checkbox" {...register('published', {})}/>
-          <label>Published</label>
-        </fieldset>
-
-        <button type="submit" className="btn-green" disabled={!isDirty || !isValid}>
-          Save Changes
-        </button>
-      </div>
-    </form>
-  );
-}
 
 function DeleteProjectButton({ projectRef }) {
   const router = useRouter();

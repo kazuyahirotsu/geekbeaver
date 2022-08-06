@@ -3,6 +3,7 @@ import AuthCheck from '../../../components/AuthCheck';
 import { firestore, auth } from '../../../lib/firebase';
 import { serverTimestamp, doc, deleteDoc, updateDoc, getFirestore } from 'firebase/firestore';
 import ImageUploader from '../../../components/ImageUploader';
+import Editor from '../../../components/Editor'
 
 import { useState } from 'react';
 import { useRouter } from 'next/router';
@@ -12,35 +13,62 @@ import { useForm } from 'react-hook-form';
 import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
-import Editor from '../../../components/Editor';
 
 export default function AdminProjectEdit(props) {
-  const router = useRouter();
-  const { projectname, slug } = router.query;
-
-  const postRef = doc(getFirestore(), 'users', auth.currentUser.uid, 'projects', projectname, 'posts', slug);
-  const [post] = useDocumentData(postRef);
   return (
     <AuthCheck>
-      <Editor defaultValue={post.content} contentRef={postRef} project={post}/>
+      <ProjectManager />
     </AuthCheck>
   );
 }
 
-function DeletePostButton({ postRef }) {
+function ProjectManager() {
+  const [preview, setPreview] = useState(false);
+
+  const router = useRouter();
+  const { projectname, slug } = router.query;
+
+  const postRef = doc(getFirestore(), 'users', auth.currentUser.uid, 'projects', projectname, "posts", slug);
+  const [post] = useDocumentData(postRef);
+  return (
+    <main className={styles.container}>
+      {post && (
+        <>
+          <section>
+            <p>ID: {post.slug}</p>
+            <Editor defaultValue={post.content} contentRef={postRef} />
+            {/* <ProjectForm projectRef={projectRef} defaultValues={project} preview={preview} /> */}
+          </section>
+
+          <aside>
+            <h3>Tools</h3>
+            <button onClick={() => setPreview(!preview)}>{preview ? 'Edit' : 'Preview'}</button>
+            <Link href={`/${post.username}/${projectname}`}>
+              <button className="btn-blue">Live view</button>
+            </Link>
+            <DeleteProjectButton projectRef={postRef} />
+          </aside>
+        </>
+      )}
+    </main>
+  );
+}
+
+
+function DeleteProjectButton({ projectRef }) {
   const router = useRouter();
 
-  const deletePost = async () => {
+  const deleteProject = async () => {
     const doIt = confirm('are you sure!');
     if (doIt) {
-      await deleteDoc(postRef);
+      await deleteDoc(projectRef);
       router.push('/admin');
-      toast('post annihilated ', { icon: '🗑️' });
+      toast('project annihilated ', { icon: '🗑️' });
     }
   };
 
   return (
-    <button className="btn-red" onClick={deletePost}>
+    <button className="btn-red" onClick={deleteProject}>
       Delete
     </button>
   );
