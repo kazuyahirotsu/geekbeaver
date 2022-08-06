@@ -3,6 +3,7 @@ import AuthCheck from '../../../components/AuthCheck';
 import { firestore, auth } from '../../../lib/firebase';
 import { serverTimestamp, doc, deleteDoc, updateDoc, getFirestore } from 'firebase/firestore';
 import ImageUploader from '../../../components/ImageUploader';
+import Editor from '../../../components/Editor'
 
 import { useState } from 'react';
 import { useRouter } from 'next/router';
@@ -27,7 +28,7 @@ function ProjectManager() {
   const router = useRouter();
   const { projectname, slug } = router.query;
 
-  const postRef = doc(getFirestore(), 'users', auth.currentUser.uid, 'projects', projectname, 'posts', slug);
+  const postRef = doc(getFirestore(), 'users', auth.currentUser.uid, 'projects', projectname, "posts", slug);
   const [post] = useDocumentData(postRef);
   return (
     <main className={styles.container}>
@@ -35,8 +36,8 @@ function ProjectManager() {
         <>
           <section>
             <p>ID: {post.slug}</p>
-
-            <PostForm postRef={postRef} defaultValues={post} preview={preview} />
+            <Editor defaultValue={post.content} contentRef={postRef} />
+            {/* <ProjectForm projectRef={projectRef} defaultValues={project} preview={preview} /> */}
           </section>
 
           <aside>
@@ -45,7 +46,7 @@ function ProjectManager() {
             <Link href={`/${post.username}/${projectname}`}>
               <button className="btn-blue">Live view</button>
             </Link>
-            <DeletePostButton postRef={postRef} />
+            <DeleteProjectButton projectRef={postRef} />
           </aside>
         </>
       )}
@@ -53,69 +54,21 @@ function ProjectManager() {
   );
 }
 
-function PostForm({ defaultValues, postRef, preview }) {
-  const { register, formState: { errors, isValid, isDirty }, handleSubmit, reset, watch } = useForm({ defaultValues, mode: 'onChange' });
 
-  const updatePost = async ({ content, published }) => {
-    await updateDoc(postRef, {
-      content,
-      published,
-      updatedAt: serverTimestamp(),
-    });
-
-    reset({ content, published });
-
-    toast.success('Post updated successfully!');
-  };
-
-  return (
-    <form onSubmit={handleSubmit(updatePost)}>
-      {preview && (
-        <div className="card">
-          <ReactMarkdown>{watch('content')}</ReactMarkdown>
-        </div>
-      )}
-
-      <div className={preview ? styles.hidden : styles.controls}>
-        <ImageUploader />
-
-        <textarea
-         {...register('content', {
-            maxLength: { value: 20000, message: 'content is too long' },
-            minLength: { value: 10, message: 'content is too short' },
-            required: { value: true, message: 'content is required' },
-          })}>  
-        </textarea>
-
-        {errors.content && <p className="text-danger">{errors.content.message}</p>}
-
-        <fieldset>
-          <input className={styles.checkbox} type="checkbox" {...register('published', {})}/>
-          <label>Published</label>
-        </fieldset>
-
-        <button type="submit" className="btn-green" disabled={!isDirty || !isValid}>
-          Save Changes
-        </button>
-      </div>
-    </form>
-  );
-}
-
-function DeletePostButton({ postRef }) {
+function DeleteProjectButton({ projectRef }) {
   const router = useRouter();
 
-  const deletePost = async () => {
+  const deleteProject = async () => {
     const doIt = confirm('are you sure!');
     if (doIt) {
-      await deleteDoc(postRef);
+      await deleteDoc(projectRef);
       router.push('/admin');
-      toast('post annihilated ', { icon: '🗑️' });
+      toast('project annihilated ', { icon: '🗑️' });
     }
   };
 
   return (
-    <button className="btn-red" onClick={deletePost}>
+    <button className="btn-red" onClick={deleteProject}>
       Delete
     </button>
   );

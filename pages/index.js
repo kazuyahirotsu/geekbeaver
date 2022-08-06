@@ -14,7 +14,6 @@ export async function getServerSideProps(context) {
   const ref = collectionGroup(getFirestore(), 'projects');
   const projectsQuery = query(
     ref,
-    where('published', '==', true),
     orderBy('createdAt', 'desc'),
     limit(LIMIT),
   )
@@ -43,7 +42,6 @@ export default function Home(props) {
       const ref = collectionGroup(getFirestore(), 'projects');
       const projectsQuery = query(
         ref,
-        where('published', '==', true),
         orderBy('createdAt', 'desc'),
         startAfter(cursor),
         limit(LIMIT),
@@ -64,9 +62,9 @@ export default function Home(props) {
       <Metatags title="Home Page" description="Get the latest projects on our site" />
 
       <div className="card card-info">
-        <h2>💡 Next.js + Firebase - The Full Course</h2>
+        <h2>💡 SNS based on your projects</h2>
         <p>Welcome! This app is built with Next.js and Firebase and is loosely inspired by Dev.to.</p>
-        <p>Sign up for an 👨‍🎤 account, ✍️ write projects, then 💞 heart content created by other users. All public content is server-rendered and search-engine optimized.</p>
+        <p>Sign up for an 👨‍🎤 account, ✍️ write projects and posts, then 💞 heart content created by other users.</p>
       </div>
      
       <ProjectFeed projects={projects} />

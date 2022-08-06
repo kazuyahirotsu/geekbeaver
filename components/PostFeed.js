@@ -4,8 +4,9 @@ import HeartButton from '../components/HeartButton';
 import AuthCheck from '../components/AuthCheck';
 import { doc, getFirestore } from 'firebase/firestore';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from '../lib/context';
+import Editor from '../components/Editor'
 
 
 export default function PostFeed({ posts, admin, project }) {
@@ -14,6 +15,7 @@ export default function PostFeed({ posts, admin, project }) {
 }
 
 function PostItem({ post_slow, admin = false , project, currentUser }) {
+  const [edit, setEdit] = useState(false);
 
   const postRef = doc(getFirestore(), 'users', project.uid, 'projects', project.slug, 'posts', post_slow.slug);
   const [realtimePost] = useDocumentData(postRef);
@@ -35,7 +37,7 @@ function PostItem({ post_slow, admin = false , project, currentUser }) {
         </Link>{' '}
         on {createdAt.toISOString()}
       </span>
-      <ReactMarkdown>{post?.content}</ReactMarkdown>
+      <Editor defaultValue={post.content} project={post} contentRef={postRef} edit={edit}/>
 
       <footer>
         <span>
@@ -54,11 +56,14 @@ function PostItem({ post_slow, admin = false , project, currentUser }) {
       </footer>
 
       {/* If admin view, show extra controls for user */}
-      {currentUser?.uid === post.uid && (
+      {currentUser?.uid === post.uid && !edit &&(
           <>
-            <Link href={`/admin/${project.slug}/${post.slug}`}>
-              <button className="btn-blue">Edit Post</button>
-            </Link>
+              <button className="btn-blue" onClick={()=>{setEdit(true)}}>Edit Post</button>
+          </>
+        )}
+      {currentUser?.uid === post.uid && edit &&(
+          <>
+              <button className="btn-blue" onClick={()=>{setEdit(false)}}>Edit Done</button>
           </>
         )}
     </div>

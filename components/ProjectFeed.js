@@ -40,7 +40,6 @@ function ProjectItem({ project, admin = false }) {
             </h3>
           </Link>
 
-          {project.published ? <p className="text-success">Live</p> : <p className="text-danger">Unpublished</p>}
         </>
       )}
     </div>

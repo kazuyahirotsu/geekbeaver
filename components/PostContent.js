@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
+import Editor from '../components/Editor'
 
 // UI component for main post content
 export default function PostContent({ post }) {
@@ -15,7 +16,7 @@ export default function PostContent({ post }) {
         </Link>{' '}
         on {createdAt.toISOString()}
       </span>
-      <ReactMarkdown>{post?.content}</ReactMarkdown>
+      <Editor defaultValue={post.content} edit={false}/>
     </div>
   );
 }
