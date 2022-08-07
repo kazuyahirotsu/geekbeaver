@@ -17,10 +17,12 @@ import { useEffect, useContext } from 'react';
 import toast from 'react-hot-toast';
 import PostFeed from '../../components/PostFeed';
 import Editor from '../../components/Editor';
+import kebabCase from 'lodash.kebabcase';
 
 // SSG
 export async function getStaticProps({ params }) {
-  const { username, slug } = params;
+  const { username, slug:slug_original } = params;
+  const slug = encodeURI(kebabCase(slug_original));
   const userDoc = await getUserWithUsername(username);
 
   let project;

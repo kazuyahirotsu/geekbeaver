@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import kebabCase from 'lodash.kebabcase';
 
 export default function AdminProjectEdit(props) {
   return (
@@ -26,7 +27,8 @@ function ProjectManager() {
   const [preview, setPreview] = useState(false);
 
   const router = useRouter();
-  const { projectname } = router.query;
+  const { projectname:projectname_original } = router.query;
+  const projectname = encodeURI(kebabCase(projectname_original));
 
   const projectRef = doc(getFirestore(), 'users', auth.currentUser.uid, 'projects', projectname);
   const [project] = useDocumentData(projectRef);
