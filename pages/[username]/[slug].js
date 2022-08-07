@@ -18,12 +18,13 @@ import toast from 'react-hot-toast';
 import PostFeed from '../../components/PostFeed';
 import Editor from '../../components/Editor';
 import kebabCase from 'lodash.kebabcase';
+import { containJapanese } from '../../lib/hooks';
 
 // SSG
 export async function getStaticProps({ params }) {
   const { username, slug:slug_original } = params;
-  console.log(slug_original);
-  const slug = encodeURI(slug_original);
+  
+  const slug = containJapanese(slug_original) ? encodeURI(kebabCase(slug_original)):slug_original;
   const userDoc = await getUserWithUsername(username);
 
   let project;

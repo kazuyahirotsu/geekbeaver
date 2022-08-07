@@ -14,6 +14,8 @@ import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 import kebabCase from 'lodash.kebabcase';
+import { containJapanese } from '../../../lib/hooks';
+
 
 export default function AdminProjectEdit(props) {
   return (
@@ -28,7 +30,9 @@ function ProjectManager() {
 
   const router = useRouter();
   const { projectname:projectname_original } = router.query;
-  const projectname = encodeURI(kebabCase(projectname_original));
+  const projectname = containJapanese(projectname_original) ? encodeURI(kebabCase(projectname_original)):projectname_original;
+
+  
 
   const projectRef = doc(getFirestore(), 'users', auth.currentUser.uid, 'projects', projectname);
   const [project] = useDocumentData(projectRef);
