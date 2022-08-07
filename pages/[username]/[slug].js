@@ -22,7 +22,8 @@ import kebabCase from 'lodash.kebabcase';
 // SSG
 export async function getStaticProps({ params }) {
   const { username, slug:slug_original } = params;
-  const slug = encodeURI(kebabCase(slug_original));
+  console.log(slug_original);
+  const slug = encodeURI(slug_original);
   const userDoc = await getUserWithUsername(username);
 
   let project;
