@@ -17,17 +17,22 @@ import { useEffect, useContext } from 'react';
 import toast from 'react-hot-toast';
 import PostFeed from '../../components/PostFeed';
 import Editor from '../../components/Editor';
+import kebabCase from 'lodash.kebabcase';
+import { containJapanese } from '../../lib/hooks';
 
 // SSG
 export async function getStaticProps({ params }) {
-  const { username, slug } = params;
+  const { username, slug:slug_original } = params;
+  
+  const slug = containJapanese(slug_original) ? encodeURI(kebabCase(slug_original)):slug_original;
   const userDoc = await getUserWithUsername(username);
 
   let project;
   let path;
   let posts = null;
   
-  if (userDoc) {
+  if (userDoc&&slug) {
+    console.log(slug);
     const projectRef = doc(getFirestore(), userDoc.ref.path, 'projects', slug);
 
     project = projectToJSON(await getDoc(projectRef) );

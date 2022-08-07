@@ -13,6 +13,10 @@ import { useForm } from 'react-hook-form';
 import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import kebabCase from 'lodash.kebabcase';
+import { containJapanese } from '../../../lib/hooks';
+
+
 
 export default function AdminProjectEdit(props) {
   return (
@@ -26,7 +30,10 @@ function ProjectManager() {
   const [preview, setPreview] = useState(false);
 
   const router = useRouter();
-  const { projectname, slug } = router.query;
+  const { projectname:projectname_original, slug:slug_original } = router.query;
+  const projectname = containJapanese(projectname_original) ? encodeURI(kebabCase(projectname_original)):projectname_original;
+  const slug = containJapanese(slug_original) ? encodeURI(kebabCase(slug_original)):slug_original;
+
 
   const postRef = doc(getFirestore(), 'users', auth.currentUser.uid, 'projects', projectname, "posts", slug);
   const [post] = useDocumentData(postRef);
