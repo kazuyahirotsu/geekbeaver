@@ -29,7 +29,8 @@ export async function getStaticProps({ params }) {
   let path;
   let posts = null;
   
-  if (userDoc) {
+  if (userDoc&&slug) {
+    console.log(slug);
     const projectRef = doc(getFirestore(), userDoc.ref.path, 'projects', slug);
 
     project = projectToJSON(await getDoc(projectRef) );
