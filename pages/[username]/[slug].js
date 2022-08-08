@@ -115,7 +115,7 @@ export default function Project(props) {
         
 
         <div className="">
-          <PostFeed posts={props.posts} project={project}/>
+          <PostFeed posts={props.posts} />
         </div>
 
       </div>

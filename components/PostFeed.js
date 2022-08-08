@@ -9,15 +9,15 @@ import { UserContext } from '../lib/context';
 import Editor from '../components/Editor'
 
 
-export default function PostFeed({ posts, admin, project }) {
+export default function PostFeed({ posts, admin }) {
   const { user: currentUser, username } = useContext(UserContext);
-  return posts ? posts.map((post) => <PostItem post_slow={post} key={post.slug} admin={admin} project={project} currentUser={currentUser} />) : null;
+  return posts ? posts.map((post) => <PostItem post_slow={post} key={post.slug} admin={admin} currentUser={currentUser} />) : null;
 }
 
-function PostItem({ post_slow, admin = false , project, currentUser }) {
+function PostItem({ post_slow, admin = false , currentUser }) {
   const [edit, setEdit] = useState(false);
 
-  const postRef = doc(getFirestore(), 'users', project.uid, 'projects', project.slug, 'posts', post_slow.slug);
+  const postRef = doc(getFirestore(), 'users', post_slow.uid, 'projects', post_slow.projectSlug, 'posts', post_slow.slug);
   const [realtimePost] = useDocumentData(postRef);
   const post = realtimePost || post_slow;
 
