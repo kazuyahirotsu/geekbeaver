@@ -69,7 +69,7 @@ export default function Posts(props) {
       </Link>
 
       <div className="card card-info">
-        <h2>💡 SNS based on your posts</h2>
+        <h2>💡 SNS based on your projects</h2>
         <p>Welcome! This app is built with Next.js and Firebase and is loosely inspired by Dev.to.</p>
         <p>Sign up for an 👨‍🎤 account, ✍️ write projects and posts, then 💞 heart content created by other users.</p>
       </div>
