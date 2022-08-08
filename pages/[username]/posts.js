@@ -1,8 +1,8 @@
 import { getUserWithUsername, projectToJSON, firestore } from '../../lib/firebase';
-import { query, collection, where, getDocs, limit, orderBy, getFirestore } from 'firebase/firestore';
+import { query, collection, where, getDocs, limit, orderBy, getFirestore, collectionGroup } from 'firebase/firestore';
 import UserProfile from '../../components/UserProfile';
 import Metatags from '../../components/Metatags';
-import ProjectFeed from '../../components/ProjectFeed';
+import PostFeed from '../../components/PostFeed';
 import Link from 'next/link';
 
 
@@ -21,25 +21,26 @@ export async function getServerSideProps({ query: urlQuery }) {
 
   // JSON serializable data
   let user = null;
-  let projects = null;
+  let posts = null;
 
   if (userDoc) {
     user = userDoc.data();
 
-    const projectsQuery = query(
-      collection(getFirestore(), userDoc.ref.path, 'projects'),
+    const postsQuery = query(
+      collectionGroup(getFirestore(), 'posts'),
+      where('username','==',user.username),
       orderBy('createdAt', 'desc'),
       limit(5)
     );
-    projects = (await getDocs(projectsQuery)).docs.map(projectToJSON);
+    posts = (await getDocs(postsQuery)).docs.map(projectToJSON);
   }
 
   return {
-    props: { user, projects }, // will be passed to the page component as props
+    props: { user, posts }, // will be passed to the page component as props
   };
 }
 
-export default function UserProfilePage({ user, projects }) {
+export default function UserProfilePage({ user, posts }) {
   return (
     <main>
       <Metatags title={user.username} description={`${user.username}'s public profile`} />
@@ -50,7 +51,7 @@ export default function UserProfilePage({ user, projects }) {
       <Link href={`/${user.username}/posts`}>
                 <button className="btn-blue">posts</button>
       </Link>
-      <ProjectFeed projects={projects} />
+      <PostFeed posts={posts} mentionProject={true} />
     </main>
   );
 }

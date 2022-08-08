@@ -32,7 +32,6 @@ export async function getStaticProps({ params }) {
   let posts = null;
   
   if (userDoc&&slug) {
-    console.log(slug);
     const projectRef = doc(getFirestore(), userDoc.ref.path, 'projects', slug);
 
     project = projectToJSON(await getDoc(projectRef) );
@@ -115,7 +114,7 @@ export default function Project(props) {
         
 
         <div className="">
-          <PostFeed posts={props.posts} project={project}/>
+          <PostFeed posts={props.posts} />
         </div>
 
       </div>

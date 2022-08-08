@@ -27,6 +27,8 @@ export default function Editor({ defaultValue, contentRef, edit=true , newSlug, 
             slug: newSlug, // todo
             uid: project.uid,
             username: project.username,
+            projectSlug: project.slug,
+            projectTitle: project.title,
             content,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp(),

@@ -68,8 +68,6 @@ function CreateNewProject() {
   const checkTitle = useCallback(
     debounce(async (slug) => {   
       const ref = doc(getFirestore(), 'users', user.uid, 'projects', slug);
-      console.log(user.uid);
-      console.log(slug);
       const snap = await getDoc(ref);
       console.log('Firestore read executed!', snap.exists());
       setIsValid(!snap.exists());
