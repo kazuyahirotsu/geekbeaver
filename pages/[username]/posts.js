@@ -51,7 +51,7 @@ export default function UserProfilePage({ user, posts }) {
       <Link href={`/${user.username}/posts`}>
                 <button className="btn-blue">posts</button>
       </Link>
-      <PostFeed posts={posts} />
+      <PostFeed posts={posts} mentionProject={true} />
     </main>
   );
 }

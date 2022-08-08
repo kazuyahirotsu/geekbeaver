@@ -74,7 +74,7 @@ export default function Posts(props) {
         <p>Sign up for an 👨‍🎤 account, ✍️ write projects and posts, then 💞 heart content created by other users.</p>
       </div>
      
-      <PostFeed posts={posts} />
+      <PostFeed posts={posts} mentionProject={true} />
 
       {!loading && !postsEnd && <button onClick={getMorePosts}>Load more</button>}
 
