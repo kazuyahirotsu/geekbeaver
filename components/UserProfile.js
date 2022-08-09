@@ -24,7 +24,7 @@ export default function UserProfile( {user} ) {
 
       {currentUser?.uid === user.uid && !edit &&(
           <>
-              <button className="btn-blue" onClick={()=>{setEdit(true)}}>Edit Post</button>
+              <button className="btn-blue" onClick={()=>{setEdit(true)}}>Edit Profile</button>
           </>
         )}
       {currentUser?.uid === user.uid && edit &&(
