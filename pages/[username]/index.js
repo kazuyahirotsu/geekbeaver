@@ -33,7 +33,7 @@ export async function getServerSideProps({ query: urlQuery }) {
     );
     projects = (await getDocs(projectsQuery)).docs.map(projectToJSON);
   }
-
+  
   return {
     props: { user, projects }, // will be passed to the page component as props
   };

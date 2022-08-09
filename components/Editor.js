@@ -8,12 +8,16 @@ import { useRouter } from 'next/router';
 
 // seems like you can't change the stlye after initializing quill nor 
 // render the not rendered component at the first time
-export default function Editor({ defaultValue, contentRef, edit=true , newSlug, newPost=false, project, editButton=false}) {
+export default function Editor({ defaultValue, contentRef, edit=true , newSlug, newPost=false, project, profile=false}) {
     const router = useRouter();
     const [value, setValue] = useState(defaultValue);
     const [readOnlyOption, setReadOnlyOption] = useState(true);
 
     const updateContent = async ({ content, contentRef }) => {
+        profile?
+        await updateDoc(contentRef, {
+          profile: content
+        }):
         await updateDoc(contentRef, {
           content,
           updatedAt: serverTimestamp(),
