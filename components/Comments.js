@@ -9,15 +9,24 @@ import { UserContext } from '../lib/context';
 import Editor from '../components/Editor'
 
 
+
 export default function Comments({ comments, newCommentRef, newSlug, parentUid, parentProjectSlug, parentPostSlug }) {
   const { user: currentUser, username } = useContext(UserContext);
   const date = new Date();
   return(
     <div>
+        <AuthCheck
+        fallback={
+          <Link href="/enter">
+            <button>Sign Up to comment</button>
+          </Link>
+        }>
         <div className="card">
         <p>Add new comment</p>
         <Editor defaultValue={""} contentRef={newCommentRef} newSlug={String(date.getTime())} newPost={true} currentUser={currentUser} currentUsername={username} newComment={true}/>
         </div>
+      </AuthCheck>
+
         {comments ? comments.map((comment) => <Comment comment_slow={comment} key={comment.slug}  currentUser={currentUser} parentUid={parentUid} parentProjectSlug={parentProjectSlug} parentPostSlug={parentPostSlug}/>) : null}
     </div>
   ) 
