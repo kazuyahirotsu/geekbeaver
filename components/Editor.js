@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 
 // seems like you can't change the stlye after initializing quill nor 
 // render the not rendered component at the first time
-export default function Editor({ defaultValue, contentRef, edit=true , newSlug, newPost=false, project, profile=false}) {
+export default function Editor({ defaultValue, contentRef, edit=true , newSlug, newPost=false, project, profile=false, currentUser, currentUsername, comment=false, newComment=false}) {
     const router = useRouter();
     const [value, setValue] = useState(defaultValue);
     const [readOnlyOption, setReadOnlyOption] = useState(true);
@@ -17,8 +17,12 @@ export default function Editor({ defaultValue, contentRef, edit=true , newSlug, 
         profile?
         await updateDoc(contentRef, {
           profile: content
-        }):
+        })
+        :comment?
         await updateDoc(contentRef, {
+          comment: content
+        })
+        :await updateDoc(contentRef, {
           content,
           updatedAt: serverTimestamp(),
         });
@@ -26,29 +30,40 @@ export default function Editor({ defaultValue, contentRef, edit=true , newSlug, 
         toast.success('Updated successfully!');
       };
 
-      const createContent = async ({ content, contentRef }) => {
-        const data = {
-            slug: newSlug, // todo
-            uid: project.uid,
-            username: project.username,
-            projectSlug: project.slug,
-            projectTitle: project.title,
-            content,
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp(),
-            heartCount: 0,
-            viewCount: 0,
-            commentCount: 0,
-          };
-        await setDoc(contentRef, data);
-    
-        toast.success('Post created successfully!');
-      };
-      
+    const createContent = async ({ content, contentRef }) => {
+      const data = {
+          slug: newSlug, // todo
+          uid: project.uid,
+          username: project.username,
+          projectSlug: project.slug,
+          projectTitle: project.title,
+          content,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          heartCount: 0,
+          viewCount: 0,
+          commentCount: 0,
+        };
+      await setDoc(contentRef, data);
+  
+      toast.success('Post created successfully!');
+    };
 
-    useEffect(() =>  {
-        console.log(value);
-    },[value])
+
+    const createComment = async ({ comment, contentRef }) => {
+      const data = {
+          slug: newSlug, // todo
+          uid: currentUser.uid,
+          username: currentUsername,
+          comment,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          heartCount: 0,
+        };
+      await setDoc(contentRef, data);
+  
+      toast.success('Comment created successfully!');
+    };
 
     const modules = {
         toolbar: [
@@ -70,7 +85,21 @@ export default function Editor({ defaultValue, contentRef, edit=true , newSlug, 
   return (
     <div>
         {
-        newPost?
+        newComment?
+        <div>
+            <ReactQuill theme="snow"
+                        modules={modules}
+                        value={value} 
+                        onChange={setValue}>
+            </ReactQuill>
+            <button type="submit" className="btn-green" onClick={()=>{
+              createComment({comment:value, contentRef:contentRef})
+              router.reload()
+              }} > {/* // todo */}
+            Save Changes
+            </button>
+        </div>
+        :newPost?
         <div>
             <ReactQuill theme="snow"
                         modules={modules}

@@ -6,12 +6,17 @@ import { doc, getFirestore } from 'firebase/firestore';
 import { useContext } from 'react';
 import { UserContext } from '../lib/context';
 import Editor from '../components/Editor'
+import Comments from '../components/Comments';
+
 
 // UI component for main project content
-export default function ProjectContent({ project }) {
+export default function ProjectContent({ project, comments}) {
   const { user: currentUser, username } = useContext(UserContext);
   const projectRef = doc(getFirestore(), 'users', project.uid, 'projects', project.slug);
   const createdAt = typeof project?.createdAt === 'number' ? new Date(project.createdAt) : project.createdAt.toDate();
+  const date = new Date();
+  const newCommentRef = doc(getFirestore(), 'users', project.uid, 'projects', project.slug, 'comments', String(date.getTime())); // todo add uid or username to newslug
+
 
   return (
     <div className="card">
@@ -52,6 +57,7 @@ export default function ProjectContent({ project }) {
       )}
 
       {/* comment section */}
+      <Comments comments={comments} newSlug={String(date.getTime())} newCommentRef={newCommentRef} parentUid={project.uid} parentProjectSlug={project.slug} />
       {/* show comment */}
 
       {/* add comment */}
