@@ -2,11 +2,14 @@ import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
 import HeartButton from '../components/HeartButton';
 import AuthCheck from '../components/AuthCheck';
-import { doc, getFirestore } from 'firebase/firestore';
+import { doc, getFirestore, query, collection, orderBy, getDocs } from 'firebase/firestore';
+import { projectToJSON } from '../lib/firebase';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../lib/context';
 import Editor from '../components/Editor'
+import Comments from '../components/Comments';
+
 
 
 export default function PostFeed({ posts, admin, mentionProject=false }) {
@@ -16,6 +19,7 @@ export default function PostFeed({ posts, admin, mentionProject=false }) {
 
 function PostItem({ post_slow, admin = false , currentUser, mentionProject }) {
   const [edit, setEdit] = useState(false);
+  const [comments, setComments] = useState();
 
   const postRef = doc(getFirestore(), 'users', post_slow.uid, 'projects', post_slow.projectSlug, 'posts', post_slow.slug);
   const [realtimePost] = useDocumentData(postRef);
@@ -25,7 +29,21 @@ function PostItem({ post_slow, admin = false , currentUser, mentionProject }) {
   const wordCount = post?.content.trim().split(/\s+/g).length;
   const minutesToRead = (wordCount / 100 + 1).toFixed(0);
   const createdAt = typeof post?.createdAt === 'number' ? new Date(post.createdAt) : post.createdAt.toDate();
+  
+  const date = new Date();
+  const newCommentRef = doc(getFirestore(), 'users', post.uid, 'projects', post.projectSlug, 'posts', post.slug, 'comments', String(date.getTime())); // todo add uid or username to newslug
+  
+  const getComments = async () => {
+    const commentsQuery = query(
+      collection(getFirestore(), 'users', post.uid, 'projects', post.projectSlug, 'posts', post.slug, 'comments'),
+      orderBy('createdAt', 'desc')
+    );
+    setComments((await getDocs(commentsQuery)).docs.map(projectToJSON));
+  };
 
+  useEffect(() => {
+    getComments();
+  }, []);
 
   return (
     <div className="card">
@@ -73,6 +91,10 @@ function PostItem({ post_slow, admin = false , currentUser, mentionProject }) {
               <button className="btn-blue" onClick={()=>{setEdit(false)}}>Edit Done</button>
           </>
         )}
+      
+      {/* comment section */}
+      {comments? <Comments comments={comments} newSlug={String(date.getTime())} newCommentRef={newCommentRef} parentUid={post.uid} parentProjectSlug={post.projectSlug} parentPostSlug={post.slug} />:null}
+
     </div>
   );
 }

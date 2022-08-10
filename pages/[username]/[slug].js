@@ -19,6 +19,7 @@ import PostFeed from '../../components/PostFeed';
 import Editor from '../../components/Editor';
 import kebabCase from 'lodash.kebabcase';
 import { containJapanese } from '../../lib/hooks';
+import Comments from '../../components/Comments';
 
 // SSG
 export async function getStaticProps({ params }) {
@@ -30,6 +31,7 @@ export async function getStaticProps({ params }) {
   let project;
   let path;
   let posts = null;
+  let comments = null;
   
   if (userDoc&&slug) {
     const projectRef = doc(getFirestore(), userDoc.ref.path, 'projects', slug);
@@ -45,10 +47,17 @@ export async function getStaticProps({ params }) {
     );
     posts = (await getDocs(postsQuery)).docs.map(projectToJSON);
 
+    const commentsQuery = query(
+      collection(getFirestore(), userDoc.ref.path, 'projects', slug, 'comments'),
+      orderBy('createdAt', 'desc'),
+      limit(5)
+    );
+    comments = (await getDocs(commentsQuery)).docs.map(projectToJSON);
+
   }
 
   return {
-    props: { project, path, posts },
+    props: { project, path, posts, comments },
     revalidate: 100,
   };
 }
@@ -86,6 +95,7 @@ export default function Project(props) {
   const date = new Date();
   const { user: currentUser, username } = useContext(UserContext);
   const postRef = doc(getFirestore(), 'users', project.uid, 'projects', project.slug, 'posts', String(date.getTime())); // todo
+  const newCommentRef = doc(getFirestore(), 'users', project.uid, 'projects', project.slug, 'comments', String(date.getTime())); // todo add uid or username to newslug
   
   useEffect(() => {
     updateDoc(projectRef, {
@@ -101,7 +111,8 @@ export default function Project(props) {
       <div className="flex flex-col">
         
         <section>
-          <ProjectContent project={project} />
+          <ProjectContent project={project} comments={props.comments} />
+          {/* <Comments comments={props.comments} newSlug={String(date.getTime())} newCommentRef={newCommentRef} parentUid={project.uid} parentProjectSlug={project.slug} /> */}
         </section>
 
         
@@ -114,7 +125,7 @@ export default function Project(props) {
         
 
         <div className="">
-          <PostFeed posts={props.posts} />
+          <PostFeed posts={props.posts}/>
         </div>
 
       </div>
