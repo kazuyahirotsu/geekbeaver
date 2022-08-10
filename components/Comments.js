@@ -18,7 +18,7 @@ export default function Comments({ comments, newCommentRef, newSlug, parentUid, 
         <p>Add new comment</p>
         <Editor defaultValue={""} contentRef={newCommentRef} newSlug={String(date.getTime())} newPost={true} currentUser={currentUser} currentUsername={username} newComment={true}/>
         </div>
-        {comments ? comments.map((comment) => <Comment comment_slow={comment} currentUser={currentUser} parentUid={parentUid} parentProjectSlug={parentProjectSlug} parentPostSlug={parentPostSlug}/>) : null}
+        {comments ? comments.map((comment) => <Comment comment_slow={comment} key={comment.slug}  currentUser={currentUser} parentUid={parentUid} parentProjectSlug={parentProjectSlug} parentPostSlug={parentPostSlug}/>) : null}
     </div>
   ) 
 }
