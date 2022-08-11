@@ -36,7 +36,7 @@ function PostItem({ post_slow, admin = false , currentUser, mentionProject }) {
   const getComments = async () => {
     const commentsQuery = query(
       collection(getFirestore(), 'users', post.uid, 'projects', post.projectSlug, 'posts', post.slug, 'comments'),
-      orderBy('createdAt', 'desc')
+      orderBy('createdAt')
     );
     setComments((await getDocs(commentsQuery)).docs.map(projectToJSON));
   };
@@ -46,55 +46,64 @@ function PostItem({ post_slow, admin = false , currentUser, mentionProject }) {
   }, []);
 
   return (
-    <div className="card">
+    <div className="card shadow-xl bg-base-100 mx-10 my-5">
+      <div className="card-body">
+        <span className="flex flex-col">
+          {mentionProject && 
+          <Link href={`/${post.username}/${post.projectSlug}`}>
+            <a className="">
+            Project: 
+            <strong className="text-info">{post.projectTitle}</strong>
+            </a>
+          </Link>}
 
-      <span className="text-sm">
-        Written by{' '}
-        <Link href={`/${post.username}/`}>
-          <a className="text-info">@{post.username}</a>
-        </Link>{' '}
-        on {createdAt.toISOString()}
-        {mentionProject && 
-        <Link href={`/${post.username}/${post.projectSlug}`}>
-          <a>
-          about
-          <a className="text-info">{post.projectTitle}</a>
-          </a>
-        </Link>}
-      </span>
-      <Editor defaultValue={post.content} project={post} contentRef={postRef} edit={edit}/>
+          <Link href={`/${post.username}/`}>
+            <a className="">By <strong className="text-info">@{post.username}</strong></a>
+          </Link>
 
-      <footer>
-        <span>
-          {wordCount} words. {minutesToRead} min read
+          <p className="">{createdAt.toISOString()}</p>
         </span>
-        <span className="push-left">💗 {post.heartCount || 0} Hearts</span>
-        <AuthCheck
-          fallback={
-            <Link href="/enter">
-              <button>💗 Sign Up</button>
-            </Link>
-          }
-        >
-          <HeartButton projectRef={postRef} />
-        </AuthCheck>
-      </footer>
 
-      {/* If admin view, show extra controls for user */}
-      {currentUser?.uid === post.uid && !edit &&(
-          <>
-              <button className="btn-blue" onClick={()=>{setEdit(true)}}>Edit Post</button>
-          </>
-        )}
-      {currentUser?.uid === post.uid && edit &&(
-          <>
-              <button className="btn-blue" onClick={()=>{setEdit(false)}}>Edit Done</button>
-          </>
-        )}
-      
-      {/* comment section */}
-      {comments? <Comments comments={comments} newSlug={String(date.getTime())} newCommentRef={newCommentRef} parentUid={post.uid} parentProjectSlug={post.projectSlug} parentPostSlug={post.slug} />:null}
+        <Editor defaultValue={post.content} project={post} contentRef={postRef} edit={edit}/>
 
-    </div>
+        {!edit&&<div className="flex flex-row ml-auto">
+          {/* hearts */}
+          <AuthCheck
+            fallback={
+              <Link href="/enter">
+                <button className="text-3xl">🤍</button>
+              </Link>
+            }
+          >
+            <HeartButton projectRef={postRef} />
+          </AuthCheck>
+          <span className="text-3xl">{post.heartCount || 0}</span>
+        </div>}
+
+        {/* If admin view, show extra controls for user */}
+        {currentUser?.uid === post.uid && !edit &&(
+            <div className="text-right">
+              <button className="btn btn-info" onClick={()=>{setEdit(true)}}>Edit Post</button>
+            </div>
+          )}
+        {currentUser?.uid === post.uid && edit &&(
+            <div className="text-right">
+              <button className="btn btn-info" onClick={()=>{setEdit(false)}}>Edit Done</button>
+            </div>
+          )}
+
+        {/* comment section */}
+        <div tabIndex="0" className="collapse collapse-plus border border-base-300 bg-base-100 rounded-box">
+          <input type="checkbox" className="peer" />
+          <div className="collapse-title">
+            comments
+          </div>
+          <div className="collapse-content">      
+            {comments? <Comments comments={comments} newSlug={String(date.getTime())} newCommentRef={newCommentRef} parentUid={post.uid} parentProjectSlug={post.projectSlug} parentPostSlug={post.slug} />:null}
+          </div>
+        </div>
+      </div>
+    </div> 
+
   );
 }

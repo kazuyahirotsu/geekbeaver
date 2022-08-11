@@ -59,29 +59,40 @@ export default function Home(props) {
   };
 
   return (
-    <main>
+    <main className="">
       <Metatags title="Home Page" description="Get the latest projects on our site" />
-      <Link href="/">
-                <button className="btn-blue">projects</button>
-      </Link>
-      <Link href="/posts">
-                <button className="btn-blue">posts</button>
-      </Link>
-
-
-      <div className="card card-info">
-        <h2>💡 SNS based on your projects</h2>
-        <p>Welcome! This app is built with Next.js and Firebase and is loosely inspired by Dev.to.</p>
-        <p>Sign up for an 👨‍🎤 account, ✍️ write projects and posts, then 💞 heart content created by other users.</p>
+      <div className="flex w-1/2 mx-auto my-10">
+        <div className="grid h-10 flex-grow card place-items-center bg-primary text-white">
+          <Link href="/">
+            <button className="btn-blue">projects</button>
+          </Link>
+        </div>
+        <div className="divider divider-horizontal"></div>
+        <div className="grid h-10 flex-grow card place-items-center">
+          <Link href="/posts">
+            <button className="btn-blue">posts</button>
+          </Link>
+        </div>
       </div>
-     
-      <ProjectFeed projects={projects} />
 
-      {!loading && !projectsEnd && <button onClick={getMoreProjects}>Load more</button>}
 
-      <Loader show={loading} />
+      <div className="flex flex-col w-screen">
+        <div className="card shadow-xl bg-accent text-primary-content mx-10">
+          <div className="card-body">
+            <h2>💡 SNS based on your projects</h2>
+            <p>Welcome! This app is built with Next.js and Firebase and is loosely inspired by Dev.to.</p>
+            <p>Sign up for an 👨‍🎤 account, ✍️ write projects and posts, then 💞 heart content created by other users.</p>
+          </div>
+        </div>
+      
+        <ProjectFeed projects={projects} />
 
-      {projectsEnd && 'You have reached the end!'}
+        {!loading && !projectsEnd && <button onClick={getMoreProjects} className="btn btn-wide mx-auto mb-10">Load more</button>}
+
+        <Loader show={loading} />
+
+        {projectsEnd && <p className="text-center mx-96 mb-10">You have reached the end!</p>}
+      </div>
     </main>
   );
 }

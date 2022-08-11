@@ -18,41 +18,45 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      <ul>
-        <li>
+      <div className="flex-1">
           <Link href="/">
-            <button className="btn-logo">more projects</button>
+            <button className="btn btn-ghost normal-case text-4xl">MORE PROJECTS</button>
           </Link>
-        </li>
+      </div>
 
         {/* user is signed-in and has username */}
         {username && (
-          <>
-            <li className="push-left">
-              <button onClick={signOutNow}>Sign Out</button>
-            </li>
-            <li>
-              <Link href="/admin">
-                <button className="btn-blue">Write Projects</button>
-              </Link>
-            </li>
-            <li>
-              <Link href={`/${username}`}>
-                <img src={user?.photoURL || '/hacker.png'} />
-              </Link>
-            </li>
-          </>
+          <div className="flex-none">
+            <ul className="menu menu-horizontal p-0">
+              <li className="">
+                <button onClick={signOutNow} className="btn text-white my-auto mx-3">Sign Out</button>
+              </li>
+              <li>
+                <Link href="/admin">
+                  <button className="btn btn-primary text-white my-auto">create new project</button>
+                </Link>
+              </li>
+              <li>
+                <Link href={`/${username}`}>
+                  <div className="avatar">
+                    <div className="w-12 rounded-full">
+                      <img src={user?.photoURL || '/hacker.png'} />
+                    </div>
+                  </div>
+                </Link>
+              </li>
+            </ul>
+          </div>
         )}
 
         {/* user is not signed OR has not created username */}
         {!username && (
-          <li>
+          <div className="navbar-end">
             <Link href="/enter">
-              <button className="btn-blue">Log in</button>
+              <button className="btn btn-primary btn-wide text-white">Log in</button>
             </Link>
-          </li>
+          </div>
         )}
-      </ul>
     </nav>
   );
 }

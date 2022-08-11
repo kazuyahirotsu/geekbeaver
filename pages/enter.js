@@ -40,17 +40,27 @@ function SignInButton() {
   };
 
   return (
-    <>
-      <button className="btn-google" onClick={signInWithGoogle}>
-        <img src={'/google.png'} width="30px" /> Sign in with Google
-      </button>
-      <button className="btn-google" onClick={signInWithGithub}>
-        <img src={'/google.png'} width="30px" /> Sign in with Github
-      </button>
-      <button className="btn-google" onClick={signInWithTwitter}>
-        <img src={'/google.png'} width="30px" /> Sign in with Twitter
-      </button>
-    </>
+    <div className="card shadow-xl bg-base-100 w-2/6 my-36 mx-auto">
+      <div className="card-body">
+        <div className="card-title text-3xl mb-5">
+          Sign up
+        </div>
+        <div className="flex flex-col">
+          <button className="btn mb-2 bg-[#4285F4] hover:bg-[#4285F4]/90 border-[#4285F4] hover:border-[#4285F4]/90" onClick={signInWithGoogle}> 
+            <i className="devicon-google-plain text-2xl mr-3"></i>
+            Sign in with Google
+          </button>
+          <button className="btn mb-2 bg-[#1da1f2] hover:bg-[#1da1f2]/90 border-[#1da1f2] hover:border-[#1da1f2]/90" onClick={signInWithTwitter}>        
+            <i className="devicon-twitter-original text-2xl mr-3"></i>
+            Sign in with Twitter
+          </button>
+          <button className="btn mb-2 bg-[#24292F] hover:bg-[#24292F]/90 border-[#24292F] hover:border-[#24292F]/90" onClick={signInWithGithub}>     
+            <i className="devicon-github-original text-2xl mr-3"></i>
+            Sign in with Github
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -126,16 +136,23 @@ function UsernameForm() {
 
   return (
     !username && (
-      <section>
-        <h3>Choose Username (半角英数字)</h3>
-        <form onSubmit={onSubmit}>
-          <input name="username" placeholder="myname" value={formValue} onChange={onChange} />
-          <UsernameMessage username={formValue} isValid={isValid} loading={loading} />
-          <button type="submit" className="btn-green" disabled={!isValid}>
-            Choose
-          </button>
-        </form>
-      </section>
+      <div className="card shadow-xl bg-base-100 mx-10 my-5">
+        <div className="card-body">
+          <h3 className="text-3xl mb-5">Choose Username (半角英数字)</h3>
+          <form onSubmit={onSubmit}>
+            <div className="flex flex-row">
+              <p className="text-3xl flex-none mr-3">@</p>
+              <input name="username" placeholder="myname" value={formValue} onChange={onChange} className="input text-3xl mb-5 flex-1" />
+            </div>
+            <UsernameMessage username={formValue} isValid={isValid} loading={loading} />
+            <div className="text-right">
+              <button type="submit" className="btn btn-wide btn-accent" disabled={!isValid}>
+                Choose
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     )
   );
 }

@@ -22,10 +22,10 @@ import Loader from '../components/Loader';
 
 // seems like you can't change the stlye after initializing quill nor 
 // render the not rendered component at the first time
-export default function Editor({ defaultValue, contentRef, edit=true , newSlug, newPost=false, project, profile=false, currentUser, currentUsername, comment=false, newComment=false}) {
+export default function Editor({ defaultValue, defaultTitle, contentRef, edit=false , newSlug, newPost=false, project, profile=false, currentUser, currentUsername, comment=false, newComment=false, projectedit=false}) {
     const router = useRouter();
     const [value, setValue] = useState(defaultValue);
-    const [readOnlyOption, setReadOnlyOption] = useState(true);
+    const [title, setTitle] = useState(defaultTitle);
 
     const updateContent = async ({ content, contentRef }) => {
         profile?
@@ -35,6 +35,12 @@ export default function Editor({ defaultValue, contentRef, edit=true , newSlug, 
         :comment?
         await updateDoc(contentRef, {
           comment: content
+        })
+        :projectedit?
+        await updateDoc(contentRef, {
+          content,
+          title,
+          updatedAt: serverTimestamp(),
         })
         :await updateDoc(contentRef, {
           content,
@@ -147,6 +153,9 @@ export default function Editor({ defaultValue, contentRef, edit=true , newSlug, 
         }
     };
     };
+    const onChangeTitle = (e) => {
+      setTitle(e.target.value)
+    }
 
     const modules = useMemo(() => {
       return {
@@ -182,50 +191,87 @@ export default function Editor({ defaultValue, contentRef, edit=true , newSlug, 
         <div>
             <Loader show={uploading} />
             {uploading && <h3>{progress}% uploading...</h3>}
+            <div className="text-left border-solid border">
             <ReactQuill theme="snow"
                         modules={modules}
                         value={value} 
                         onChange={setValue}
                         forwardedRef={quillRef}>
             </ReactQuill>
-            <button type="submit" className="btn-green" onClick={()=>{
+          </div>
+          <div className="text-right">
+            <button type="submit" className="btn btn-success" onClick={()=>{
               createComment({comment:value, contentRef:contentRef})
               router.reload()
               }} > {/* // todo */}
-            Save Changes
+            Add your comment
             </button>
+          </div>
         </div>
         :newPost?
         <div>
             <Loader show={uploading} />
             {uploading && <h3>{progress}% uploading...</h3>}
+          <div className="border-solid border">
             <ReactQuill theme="snow"
                         modules={modules}
                         value={value} 
                         onChange={setValue}
                         forwardedRef={quillRef}>
             </ReactQuill>
-            <button type="submit" className="btn-green" onClick={()=>{
-              createContent({content:value, contentRef:contentRef})
-              router.reload()}} > {/* // todo */}
-            Save Changes
-            </button>
+          </div>
+            <div className="text-right">
+              <button type="submit" className="btn btn-success" onClick={()=>{
+                createContent({content:value, contentRef:contentRef})
+                router.reload()}} > {/* // todo */}
+              Save Changes
+              </button>
+            </div>
+        </div>
+        :projectedit?
+        <div className="">
+            <input
+              value={title}
+              onChange={onChangeTitle}
+              className="input text-5xl mb-5 w-11/12 font-semibold"
+            />
+            <Loader show={uploading} />
+            {uploading && <h3>{progress}% uploading...</h3>}
+            <div className="border-solid border">
+            <ReactQuill theme="snow"
+                        modules={modules}
+                        value={value} 
+                        onChange={setValue}
+                        forwardedRef={quillRef}>
+            </ReactQuill>
+            </div>
+            <div className="text-right">
+              <button type="submit" className="btn btn-success" onClick={()=>{
+                updateContent({content:value, contentRef:contentRef})
+                }} >
+              Save Changes
+              </button>
+            </div>
         </div>
         :edit?
         <div>
             <Loader show={uploading} />
             {uploading && <h3>{progress}% uploading...</h3>}
+            <div className="border-solid border">
             <ReactQuill theme="snow"
                         modules={modules}
                         value={value} 
                         onChange={setValue}
                         forwardedRef={quillRef}>
             </ReactQuill>
-            <button type="submit" className="btn-green" onClick={()=>{
-              updateContent({content:value, contentRef:contentRef})
-              }} >
-            Save Changes
-            </button>
+            </div>
+            <div className="text-right">
+              <button type="submit" className="btn btn-success" onClick={()=>{
+                updateContent({content:value, contentRef:contentRef})
+                }} >
+              Save Changes
+              </button>
+            </div>
         </div>
         :
         <ReactQuill theme="snow"
