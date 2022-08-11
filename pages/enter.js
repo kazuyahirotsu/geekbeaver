@@ -1,4 +1,4 @@
-import { auth, firestore, googleAuthProvider } from '../lib/firebase';
+import { auth, firestore, googleAuthProvider, githubAuthProvider, twitterAuthProvider } from '../lib/firebase';
 import { doc, writeBatch, getDoc, getFirestore } from 'firebase/firestore';
 import { signInWithPopup, signInAnonymously, signOut } from 'firebase/auth';
 import { UserContext } from '../lib/context';
@@ -32,14 +32,23 @@ function SignInButton() {
   const signInWithGoogle = async () => {
     await signInWithPopup(auth, googleAuthProvider)
   };
+  const signInWithGithub = async () => {
+    await signInWithPopup(auth, githubAuthProvider)
+  };
+  const signInWithTwitter = async () => {
+    await signInWithPopup(auth, twitterAuthProvider)
+  };
 
   return (
     <>
       <button className="btn-google" onClick={signInWithGoogle}>
         <img src={'/google.png'} width="30px" /> Sign in with Google
       </button>
-      <button onClick={() => signInAnonymously(auth)}>
-        Sign in Anonymously
+      <button className="btn-google" onClick={signInWithGithub}>
+        <img src={'/google.png'} width="30px" /> Sign in with Github
+      </button>
+      <button className="btn-google" onClick={signInWithTwitter}>
+        <img src={'/google.png'} width="30px" /> Sign in with Twitter
       </button>
     </>
   );
@@ -58,7 +67,7 @@ function UsernameForm() {
 
   const { user, username } = useContext(UserContext);
   const router = useRouter();
-  
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -125,15 +134,6 @@ function UsernameForm() {
           <button type="submit" className="btn-green" disabled={!isValid}>
             Choose
           </button>
-
-          <h3>Debug State</h3>
-          <div>
-            Username: {formValue}
-            <br />
-            Loading: {loading.toString()}
-            <br />
-            Username Valid: {isValid.toString()}
-          </div>
         </form>
       </section>
     )
