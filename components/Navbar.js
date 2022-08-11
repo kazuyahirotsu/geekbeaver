@@ -21,7 +21,7 @@ export default function Navbar() {
       <ul>
         <li>
           <Link href="/">
-            <button className="btn-logo">geek beaver</button>
+            <button className="btn-logo">more projects</button>
           </Link>
         </li>
 
