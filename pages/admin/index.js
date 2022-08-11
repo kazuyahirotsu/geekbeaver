@@ -203,9 +203,12 @@ function CreateNewProject() {
           image: quillImageCallback,
         },
         container: [
-          [{ 'header': [1, 2, false] }],
-          ['bold', 'italic', 'underline','strike', 'blockquote'],
-          [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+          [{ 'header': [1, 2, 3, false] }],
+          [{ 'font': [] }],
+          ['bold', 'italic', 'underline','strike', 'code-block', 'blockquote'],
+          [{ 'color': [] }, { 'background': [] }],
+          [{ 'align': [] }],
+          [{'list': 'ordered'}, {'list': 'bullet'}],
           ['link', 'image'],
           ['clean']
         ],
