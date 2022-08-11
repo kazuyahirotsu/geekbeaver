@@ -136,16 +136,17 @@ function UsernameForm() {
 
   return (
     !username && (
-      <div className="card shadow-xl bg-base-100 md:mx-10 mx-1 my-5">
+      <div className="card shadow-xl bg-base-100 md:w-2/6 w-5/6 my-36 mx-auto">
         <div className="card-body">
-          <h3 className="text-3xl mb-5">Choose Username (半角英数字)</h3>
+          <h3 className="md:text-3xl text-2xl font-semibold">Choose Username</h3>
+          <h3 className="md:text-3xl text-2xl font-semibold mb-5">(半角英数字)</h3>
           <form onSubmit={onSubmit}>
             <div className="flex flex-row">
               <p className="text-3xl flex-none mr-3">@</p>
-              <input name="username" placeholder="myname" value={formValue} onChange={onChange} className="input text-3xl mb-5 flex-1" />
+              <input name="username" placeholder="myname" value={formValue} onChange={onChange} className="input text-3xl mb-5 md:flex-1 w-5/6" />
             </div>
             <UsernameMessage username={formValue} isValid={isValid} loading={loading} />
-            <div className="text-right">
+            <div className="text-center">
               <button type="submit" className="btn btn-wide btn-accent" disabled={!isValid}>
                 Choose
               </button>
