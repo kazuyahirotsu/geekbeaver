@@ -11,12 +11,15 @@ function ProjectItem({ project, admin = false }) {
 
   return (
     <div className="card shadow-xl bg-base-100 md:mx-10 mx-1 my-5">
+      <Link href={`/${project.username}/${project.slug}`}>
       <div className="card-body">
+        <div className="flex">
         <Link href={`/${project.username}`}>
           <a>
             By <strong className="text-info"> @{project.username}</strong>
           </a>
         </Link>
+        </div>
 
         <Link href={`/${project.username}/${project.slug}`}>
           <h2>
@@ -41,6 +44,7 @@ function ProjectItem({ project, admin = false }) {
           </>
         )}
       </div>
+      </Link>
     </div>
   );
 }

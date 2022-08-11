@@ -46,20 +46,25 @@ function PostItem({ post_slow, admin = false , currentUser, mentionProject }) {
   }, []);
 
   return (
+    
     <div className="card shadow-xl bg-base-100 md:mx-10 mx-1 my-5">
       <div className="card-body">
         <span className="flex flex-col">
           {mentionProject && 
+          <div className="flex">
           <Link href={`/${post.username}/${post.projectSlug}`}>
             <a className="">
             Project: 
             <strong className="text-info">{post.projectTitle}</strong>
             </a>
-          </Link>}
-
+          </Link>
+          </div>}
+          
+          <div className="flex">
           <Link href={`/${post.username}/`}>
             <a className="">By <strong className="text-info">@{post.username}</strong></a>
           </Link>
+          </div>
 
           <p className="">{createdAt.toISOString()}</p>
         </span>
