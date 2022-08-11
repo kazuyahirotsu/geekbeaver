@@ -44,12 +44,21 @@ export default function UserProfilePage({ user, projects }) {
     <main>
       <Metatags title={user.username} description={`${user.username}'s public profile`} />
       <UserProfile user={user} />
-      <Link href={`/${user.username}`}>
-                <button className="btn-blue">projects</button>
-      </Link>
-      <Link href={`/${user.username}/posts`}>
-                <button className="btn-blue">posts</button>
-      </Link>
+
+      <div className="flex w-1/2 mx-auto my-10">
+        <div className="grid h-10 flex-grow card place-items-center bg-primary text-white">
+          <Link href={`/${user.username}`}>
+                  <button className="btn-blue">projects</button>
+          </Link>
+        </div>
+        <div className="divider divider-horizontal"></div>
+        <div className="grid h-10 flex-grow card place-items-center">
+          <Link href={`/${user.username}/posts`}>
+                  <button className="btn-blue">posts</button>
+          </Link>
+        </div>
+      </div>
+      
       <ProjectFeed projects={projects} />
     </main>
   );

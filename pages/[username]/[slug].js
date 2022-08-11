@@ -105,21 +105,21 @@ export default function Project(props) {
 
 
   return (
-    // <main className={styles.container}>
     <main>
       <Metatags title={project.title} description={project.title} />
       <div className="flex flex-col">
         
         <section>
           <ProjectContent project={project} comments={props.comments} />
-          {/* <Comments comments={props.comments} newSlug={String(date.getTime())} newCommentRef={newCommentRef} parentUid={project.uid} parentProjectSlug={project.slug} /> */}
         </section>
 
         
         {currentUser?.uid === project.uid && (
-            <div className="card">
-              <p>Add new post</p>
-              <Editor defaultValue={""} contentRef={postRef} newSlug={String(date.getTime())} newPost={true} project={project}/>
+            <div className="card shadow-xl bg-base-100 md:mx-10 mx-1 my-5">
+              <div className="card-body">
+                <p>Add new post</p>
+                <Editor defaultValue={""} contentRef={postRef} newSlug={String(date.getTime())} newPost={true} project={project}/>
+              </div>
             </div>
           )}
         

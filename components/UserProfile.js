@@ -4,6 +4,7 @@ import Editor from '../components/Editor';
 import { useContext } from 'react';
 import { UserContext } from '../lib/context';
 
+
 // UI component for user profile
 
 
@@ -13,25 +14,33 @@ export default function UserProfile( {user} ) {
   const userRef = doc(getFirestore(), 'users', user.uid);
 
   return (
-    <div className="box-center">
-      <img src={user.photoURL || '/hacker.png'} className="card-img-center" />
+    <div className="text-center">
+      <div className="avatar">
+        <div className=" w-40 rounded-full">
+          <img src={user.photoURL || '/hacker.png'} className="" />
+        </div>
+      </div>
       <p>
-        <i>@{user.username}</i>
+        <i className="">@{user.username}</i>
       </p>
-      <h1>{user.displayName || 'Anonymous User'}</h1>
-      
-      <Editor defaultValue ={user.profile} contentRef={userRef} edit={edit} profile={true}/>
+      <h1 className="text-3xl">{user.displayName || 'Anonymous User'}</h1>
 
-      {currentUser?.uid === user.uid && !edit &&(
-          <>
-              <button className="btn-blue" onClick={()=>{setEdit(true)}}>Edit Profile</button>
-          </>
-        )}
-      {currentUser?.uid === user.uid && edit &&(
-          <>
-              <button className="btn-blue" onClick={()=>{setEdit(false)}}>Edit Done</button>
-          </>
-        )}
+      <div className="card shadow-xl bg-base-100 md:mx-10 mx-1 my-5">
+        <div className="card-body">
+          <Editor defaultValue ={user.profile} contentRef={userRef} edit={edit} profile={true}/>
+
+          {currentUser?.uid === user.uid && !edit &&(
+              <div className="text-right">
+                  <button className="btn btn-info" onClick={()=>{setEdit(true)}}>Edit Profile</button>
+                  </div>
+            )}
+          {currentUser?.uid === user.uid && edit &&(
+              <div className="text-right">
+                  <button className="btn btn-info" onClick={()=>{setEdit(false)}}>Edit Done</button>
+                  </div>
+            )}
+        </div>
+      </div>
     </div>
   );
 }

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "browser-image-compression": "^2.0.0",
+    "daisyui": "^2.22.0",
     "firebase": "^9.9.1",
     "lodash.debounce": "^4.0.8",
     "lodash.kebabcase": "^4.1.1",
@@ -19,6 +20,7 @@
     "react-firebase-hooks": "^5.0.3",
     "react-hook-form": "^7.34.0",
     "react-hot-toast": "^2.3.0",
+    "react-icons": "^4.4.0",
     "react-markdown": "^8.0.3",
     "react-quill": "^2.0.0",
     "style-loader": "^3.3.1"

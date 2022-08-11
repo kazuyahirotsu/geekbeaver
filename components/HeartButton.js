@@ -1,6 +1,7 @@
 import { firestore, auth } from '../lib/firebase';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import { increment, writeBatch, doc, getFirestore } from "firebase/firestore";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/fa"
 
 
 // Allows user to heart or like a project
@@ -31,8 +32,8 @@ export default function Heart({ projectRef }) {
   };
 
   return heartDoc?.exists() ? (
-    <button onClick={removeHeart}>💔 Unheart</button>
+    <button onClick={removeHeart} className="text-3xl">💗</button>
   ) : (
-    <button onClick={addHeart}>💗 Heart</button>
+    <button onClick={addHeart} className="text-3xl" >🤍</button>
   );
 }
