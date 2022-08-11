@@ -6,16 +6,29 @@ import { UserContext } from '../../lib/context';
 import { firestore, auth } from '../../lib/firebase';
 import { serverTimestamp, query, collection, orderBy, getFirestore, setDoc, doc, getDoc } from 'firebase/firestore';
 
-import { useEffect, useState, useCallback, useContext } from 'react';
+import { useEffect, useState, useCallback, useContext, useRef, useMemo } from 'react';
 import { useRouter } from 'next/router';
 
 import { useCollection } from 'react-firebase-hooks/firestore';
 import kebabCase from 'lodash.kebabcase';
 import toast from 'react-hot-toast';
 import debounce from 'lodash.debounce';
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { storage, STATE_CHANGED } from '../../lib/firebase';
+import imageCompression from 'browser-image-compression';
+import Loader from '../../components/Loader';
 
 import dynamic from 'next/dynamic';
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+const ReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import("react-quill");
+    const quillRefFun = ({ forwardedRef, ...props }) => <RQ ref={forwardedRef} {...props} />;
+    return quillRefFun
+  },
+  {
+    ssr: false
+  }
+);
 import 'react-quill/dist/quill.snow.css';
 
 export default function AdminProjectsPage(props) {
@@ -113,16 +126,92 @@ function CreateNewProject() {
     // Imperative navigation after doc is set
     router.push(`/${username}/${slug}`);
   };
+  const [uploading, setUploading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
-  const modules = {
-    toolbar: [
-    [{ 'header': [1, 2, false] }],
-    ['bold', 'italic', 'underline','strike', 'blockquote'],
-    [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-    ['link', 'image'],
-    ['clean']
-    ],
-  } 
+  const uploadFile = async (file) => {
+    // Get the file
+    const extension = file.type.split('/')[1];
+
+    // Makes reference to the storage bucket location
+    const fileRef = ref(storage, `uploads/${auth.currentUser.uid}/${Date.now()}.${extension}`);
+    setUploading(true);
+
+    // Starts the upload
+    const task = uploadBytesResumable(fileRef, file)
+
+    // Listen to updates to upload task
+    task.on(STATE_CHANGED, (snapshot) => {
+      const pct = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100/2+50).toFixed(0);
+      setProgress(pct);
+    });
+
+    // Get downloadURL AFTER task resolves (Note: this is not a native Promise)
+    task
+      .then((d) => getDownloadURL(fileRef))
+      .then((url) => {
+        insertToEditor(url);
+        setUploading(false);
+      });
+  };
+
+  const quillRef = useRef(false);
+
+  const insertToEditor = (url) => {
+    const quill = quillRef.current.getEditor();
+    const range = quill.getSelection(true);
+    quill.insertEmbed(range.index, 'image', url);
+  };
+
+  const show = (value) => {
+    setProgress((value/2).toFixed(0));
+  };
+
+  const quillImageCallback = async () => {
+    const input = document.createElement("input");
+    input.setAttribute("type", "file");
+    input.click();
+    var options = {
+      maxSizeMB: 0.1, 
+      onProgress: show,
+    }
+
+    input.onchange = () => {
+      const file = input.files[0];
+
+      // file type is only image.
+      if (/^image\//.test(file.type)) {
+        setUploading(true);
+        imageCompression(file, options)
+        .then(function (compressedFile) {
+          return uploadFile(compressedFile);
+        })
+        .catch(function (error) {
+          console.log(error.message);
+        });
+        
+      } else {
+        toast.error("This is not an image file");
+      }
+  };
+  };
+
+  const modules = useMemo(() => {
+    return {
+      toolbar: {
+        handlers: {
+          image: quillImageCallback,
+        },
+        container: [
+          [{ 'header': [1, 2, false] }],
+          ['bold', 'italic', 'underline','strike', 'blockquote'],
+          [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+          ['link', 'image'],
+          ['clean']
+        ],
+      },
+    };
+  }, []);
 
   return (
     <div>
@@ -136,10 +225,13 @@ function CreateNewProject() {
         <strong>Slug:</strong> {slug}
       </p>
       <TitleMessage  title={title} isValid={isValid} loading={loading} />
+      <Loader show={uploading} />
+      {uploading && <h3>{progress}% uploading...</h3>}
       <ReactQuill theme="snow"
-                        modules={modules}
-                        value={value} 
-                        onChange={setValue}>
+                  modules={modules}
+                  value={value} 
+                  onChange={setValue}
+                  forwardedRef={quillRef}>
       </ReactQuill>
       <button type="submit" className="btn-green" onClick={()=>createProject({content:value, title:title, slug:slug})} >
       Save Changes
