@@ -69,7 +69,6 @@ function CreateNewProject() {
     debounce(async (slug) => {   
       const ref = doc(getFirestore(), 'users', user.uid, 'projects', slug);
       const snap = await getDoc(ref);
-      console.log('Firestore read executed!', snap.exists());
       setIsValid(!snap.exists());
       setLoading(false);
     }, 500),
