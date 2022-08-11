@@ -77,7 +77,7 @@ export default function Home(props) {
 
 
       <div className="flex flex-col w-screen">
-        <div className="card shadow-xl bg-accent text-primary-content mx-10">
+        <div className="card shadow-xl bg-accent text-primary-content md:mx-10 mx-1">
           <div className="card-body">
             <h2>💡 SNS based on your projects</h2>
             <p>Welcome! This app is built with Next.js and Firebase and is loosely inspired by Dev.to.</p>
@@ -91,7 +91,7 @@ export default function Home(props) {
 
         <Loader show={loading} />
 
-        {projectsEnd && <p className="text-center mx-96 mb-10">You have reached the end!</p>}
+        {projectsEnd && <p className="text-center mb-10">You have reached the end!</p>}
       </div>
     </main>
   );

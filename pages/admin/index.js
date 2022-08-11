@@ -172,7 +172,7 @@ function CreateNewProject() {
   }, []);
 
   return (
-    <div className="card shadow-xl bg-base-100 mx-10 my-5">
+    <div className="card shadow-xl bg-base-100 md:mx-10 mx-1 my-5">
       <div className="card-body">
         <p className="text-3xl">Title</p>
         <input
@@ -185,12 +185,14 @@ function CreateNewProject() {
         <p className="text-3xl">Content</p>
         <Loader show={uploading} />
         {uploading && <h3>{progress}% uploading...</h3>}
+        <div className="border">
         <ReactQuill theme="snow"
                     modules={modules}
                     value={value} 
                     onChange={setValue}
                     forwardedRef={quillRef}>
         </ReactQuill>
+        </div>
         <div className="text-right">
           <button type="submit" className="btn btn-accent" onClick={()=>createProject({content:value, title:title, slug:slug})} >
           Post Project

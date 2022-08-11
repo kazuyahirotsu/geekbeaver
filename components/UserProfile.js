@@ -25,7 +25,7 @@ export default function UserProfile( {user} ) {
       </p>
       <h1 className="text-3xl">{user.displayName || 'Anonymous User'}</h1>
 
-      <div className="card shadow-xl bg-base-100 mx-10 my-5">
+      <div className="card shadow-xl bg-base-100 md:mx-10 mx-1 my-5">
         <div className="card-body">
           <Editor defaultValue ={user.profile} contentRef={userRef} edit={edit} profile={true}/>
 

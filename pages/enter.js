@@ -40,7 +40,7 @@ function SignInButton() {
   };
 
   return (
-    <div className="card shadow-xl bg-base-100 w-2/6 my-36 mx-auto">
+    <div className="card shadow-xl bg-base-100 md:w-2/6 w-5/6 my-36 mx-auto">
       <div className="card-body">
         <div className="card-title text-3xl mb-5">
           Sign up
@@ -136,7 +136,7 @@ function UsernameForm() {
 
   return (
     !username && (
-      <div className="card shadow-xl bg-base-100 mx-10 my-5">
+      <div className="card shadow-xl bg-base-100 md:mx-10 mx-1 my-5">
         <div className="card-body">
           <h3 className="text-3xl mb-5">Choose Username (半角英数字)</h3>
           <form onSubmit={onSubmit}>

@@ -10,7 +10,7 @@ function ProjectItem({ project, admin = false }) {
   const minutesToRead = (wordCount / 100 + 1).toFixed(0);
 
   return (
-    <div className="card shadow-xl bg-base-100 mx-10 my-5">
+    <div className="card shadow-xl bg-base-100 md:mx-10 mx-1 my-5">
       <div className="card-body">
         <Link href={`/${project.username}`}>
           <a>
