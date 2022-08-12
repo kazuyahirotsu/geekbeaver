@@ -49,7 +49,7 @@ export default function ProjectContent({ project, comments}) {
               </Link>
             }
           >
-            <HeartButton projectRef={projectRef} />
+            <HeartButton projectRef={projectRef} projectHeart={true} project={project}/>
           </AuthCheck>
           <span className="text-3xl">{project.heartCount || 0}</span>
           {/* view count */}

@@ -80,7 +80,7 @@ function PostItem({ post_slow, admin = false , currentUser, mentionProject }) {
               </Link>
             }
           >
-            <HeartButton projectRef={postRef} />
+            <HeartButton projectRef={postRef} postHeart={true}  post={post}/>
           </AuthCheck>
           <span className="text-3xl">{post.heartCount || 0}</span>
         </div>}
