@@ -12,8 +12,8 @@ export default function Heart({ projectRef, postHeart=false, post, projectHeart=
   const [heartDoc] = useDocument(heartRef);
 
   let userHeartRef;
-  postHeart? userHeartRef = doc(getFirestore(), 'users', auth.currentUser.uid, 'hearts', 'ref', 'posts', post.uid+post.slug)
-  :projectHeart? userHeartRef = doc(getFirestore(), 'users', auth.currentUser.uid, 'hearts', 'ref', 'projects', project.uid+project.slug)
+  postHeart? userHeartRef = doc(getFirestore(), 'users', auth.currentUser.uid, 'posthearts', post.uid+post.slug)
+  :projectHeart? userHeartRef = doc(getFirestore(), 'users', auth.currentUser.uid, 'projecthearts', project.uid+project.slug)
   :null;
 
   // Create a user-to-project relationship
