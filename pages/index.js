@@ -79,8 +79,7 @@ export default function Home(props) {
       <div className="flex flex-col w-screen">
         <div className="card shadow-xl bg-accent text-primary-content md:mx-10 mx-1">
           <div className="card-body">
-            <h2>💡 SNS based on your projects</h2>
-            <p>Welcome! This app is built with Next.js and Firebase and is loosely inspired by Dev.to.</p>
+            <p>Welcome! This app is for project lovers.</p>
             <p>Sign up for an 👨‍🎤 account, ✍️ write projects and posts, then 💞 heart content created by other users.</p>
           </div>
         </div>
