@@ -110,10 +110,11 @@ export default function Project(props) {
       <div className="flex flex-col">
         
         <section>
+          <p className='md:text-5xl text-4xl text-center md:mx-12 mx-1 font-semibold'>Project</p>
           <ProjectContent project={project} comments={props.comments} />
         </section>
 
-        
+        <p className='md:text-5xl text-4xl text-center md:mx-12 mx-1 mt-10 font-semibold'>Posts</p>
         {currentUser?.uid === project.uid && (
             <div className="card shadow-xl bg-base-100 md:mx-10 mx-1 my-5">
               <div className="card-body">
