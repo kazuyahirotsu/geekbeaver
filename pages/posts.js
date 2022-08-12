@@ -87,7 +87,9 @@ export default function Posts(props) {
 
         {!loading && !postsEnd && <button onClick={getMorePosts} className="btn btn-wide mx-auto mb-10">Load more</button>}
 
-        <Loader show={loading} />
+        <div className="mx-auto">
+          <Loader show={loading} className="mx-auto" />
+        </div>
 
         {postsEnd && <p className="text-center mb-10">You have reached the end!</p>}
       </div>

@@ -189,8 +189,10 @@ export default function Editor({ defaultValue, defaultTitle, contentRef, edit=fa
         {
         newComment?
         <div>
-            <Loader show={uploading} />
-            {uploading && <h3>{progress}% uploading...</h3>}
+            <div className="flex flex-row">
+              <Loader show={uploading} />
+              {uploading && <h3 className="mt-auto">{progress}% uploading...</h3>}
+            </div>
             <div className="text-left border-solid border">
             <ReactQuill theme="snow"
                         modules={modules}
@@ -200,7 +202,7 @@ export default function Editor({ defaultValue, defaultTitle, contentRef, edit=fa
             </ReactQuill>
           </div>
           <div className="text-right">
-            <button type="submit" className="btn btn-success" onClick={()=>{
+            <button type="submit" className="btn btn-success mt-1" onClick={()=>{
               createComment({comment:value, contentRef:contentRef})
               router.reload()
               }} > {/* // todo */}
@@ -210,8 +212,10 @@ export default function Editor({ defaultValue, defaultTitle, contentRef, edit=fa
         </div>
         :newPost?
         <div>
-            <Loader show={uploading} />
-            {uploading && <h3>{progress}% uploading...</h3>}
+            <div className="flex flex-row">
+              <Loader show={uploading} />
+              {uploading && <h3 className="mt-auto">{progress}% uploading...</h3>}
+            </div>
           <div className="border-solid border">
             <ReactQuill theme="snow"
                         modules={modules}
@@ -221,10 +225,10 @@ export default function Editor({ defaultValue, defaultTitle, contentRef, edit=fa
             </ReactQuill>
           </div>
             <div className="text-right">
-              <button type="submit" className="btn btn-success" onClick={()=>{
+              <button type="submit" className="btn btn-success mt-1" onClick={()=>{
                 createContent({content:value, contentRef:contentRef})
                 router.reload()}} > {/* // todo */}
-              Save Changes
+              Add new post
               </button>
             </div>
         </div>
@@ -235,8 +239,10 @@ export default function Editor({ defaultValue, defaultTitle, contentRef, edit=fa
               onChange={onChangeTitle}
               className="input text-5xl mb-5 w-11/12 font-semibold"
             />
-            <Loader show={uploading} />
-            {uploading && <h3>{progress}% uploading...</h3>}
+            <div className="flex flex-row">
+              <Loader show={uploading} />
+              {uploading && <h3 className="mt-auto">{progress}% uploading...</h3>}
+            </div>
             <div className="border-solid border">
             <ReactQuill theme="snow"
                         modules={modules}
@@ -246,7 +252,7 @@ export default function Editor({ defaultValue, defaultTitle, contentRef, edit=fa
             </ReactQuill>
             </div>
             <div className="text-right">
-              <button type="submit" className="btn btn-success" onClick={()=>{
+              <button type="submit" className="btn btn-success mt-1" onClick={()=>{
                 updateContent({content:value, contentRef:contentRef})
                 }} >
               Save Changes
@@ -255,8 +261,10 @@ export default function Editor({ defaultValue, defaultTitle, contentRef, edit=fa
         </div>
         :edit?
         <div>
-            <Loader show={uploading} />
-            {uploading && <h3>{progress}% uploading...</h3>}
+            <div className="flex flex-row">
+              <Loader show={uploading} />
+              {uploading && <h3 className="mt-auto">{progress}% uploading...</h3>}
+            </div>
             <div className="border-solid border">
             <ReactQuill theme="snow"
                         modules={modules}
@@ -266,7 +274,7 @@ export default function Editor({ defaultValue, defaultTitle, contentRef, edit=fa
             </ReactQuill>
             </div>
             <div className="text-right">
-              <button type="submit" className="btn btn-success" onClick={()=>{
+              <button type="submit" className="btn btn-success mt-1" onClick={()=>{
                 updateContent({content:value, contentRef:contentRef})
                 }} >
               Save Changes

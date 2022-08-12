@@ -21,6 +21,7 @@
     "react-hook-form": "^7.34.0",
     "react-hot-toast": "^2.3.0",
     "react-icons": "^4.4.0",
+    "react-loader-spinner": "^5.1.7-beta.1",
     "react-markdown": "^8.0.3",
     "react-quill": "^2.0.0",
     "style-loader": "^3.3.1"

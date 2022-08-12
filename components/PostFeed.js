@@ -9,6 +9,8 @@ import { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../lib/context';
 import Editor from '../components/Editor'
 import Comments from '../components/Comments';
+import DeleteButton from '../components/DeleteButton';
+
 
 
 
@@ -88,12 +90,13 @@ function PostItem({ post_slow, admin = false , currentUser, mentionProject }) {
         {/* If admin view, show extra controls for user */}
         {currentUser?.uid === post.uid && !edit &&(
             <div className="text-right">
-              <button className="btn btn-info" onClick={()=>{setEdit(true)}}>Edit Post</button>
+              <button className="btn btn-info mr-1" onClick={()=>{setEdit(true)}}>✏️</button>
+              <DeleteButton deleteRef={postRef} />
             </div>
           )}
         {currentUser?.uid === post.uid && edit &&(
             <div className="text-right">
-              <button className="btn btn-info" onClick={()=>{setEdit(false)}}>Edit Done</button>
+              <button className="btn btn-outline btn-info" onClick={()=>{setEdit(false)}}>✏️</button>
             </div>
           )}
 

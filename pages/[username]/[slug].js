@@ -118,7 +118,6 @@ export default function Project(props) {
         {currentUser?.uid === project.uid && (
             <div className="card shadow-xl bg-base-100 md:mx-10 mx-1 my-5">
               <div className="card-body">
-                <p>Add new post</p>
                 <Editor defaultValue={""} contentRef={postRef} newSlug={String(date.getTime())} newPost={true} project={project}/>
               </div>
             </div>
@@ -135,13 +134,11 @@ export default function Project(props) {
 }
 
 function DeletePostButton({ postRef }) {
-  const router = useRouter();
 
   const deletePost = async () => {
     const doIt = confirm('are you sure!');
     if (doIt) {
       await deleteDoc(postRef);
-      router.push('/admin');
       toast('post annihilated ', { icon: '🗑️' });
     }
   };
