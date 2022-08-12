@@ -39,8 +39,10 @@ export default function ImageUploader() {
 
   return (
     <div className="box">
-      <Loader show={uploading} />
-      {uploading && <h3>{progress}%</h3>}
+      <div className="flex flex-row">
+        <Loader show={uploading} />
+        {uploading && <h3 className="mt-auto">{progress}% uploading...</h3>}
+      </div>
 
       {!uploading && (
         <>

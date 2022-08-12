@@ -7,6 +7,7 @@ import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { useContext, useState } from 'react';
 import { UserContext } from '../lib/context';
 import Editor from '../components/Editor'
+import DeleteButton from '../components/DeleteButton';
 
 
 
@@ -64,14 +65,15 @@ function Comment({ comment_slow, currentUser, parentUid, parentProjectSlug, pare
 
 
       {/* If admin view, show extra controls for user */}
-      {currentUser?.uid === comment.uid && !edit &&(
+      {currentUser?.uid === comment.uid && !edit && commentRef &&(
           <div className="text-right">
-              <button className="btn btn-info" onClick={()=>{setEdit(true)}}>Edit comment</button>
+              <button className="btn btn-info mr-1" onClick={()=>{setEdit(true)}}>✏️</button>
+              <DeleteButton deleteRef={commentRef} />
           </div>
         )}
       {currentUser?.uid === comment.uid && edit &&(
           <div className="text-right">
-              <button className="btn btn-info" onClick={()=>{setEdit(false)}}>Edit Done</button>
+              <button className="btn btn-outline  btn-info" onClick={()=>{setEdit(false)}}>✏️</button>
           </div>
         )}
     </div>

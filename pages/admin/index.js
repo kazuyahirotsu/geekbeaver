@@ -67,6 +67,8 @@ function CreateNewProject() {
       uid,
       username,
       content,
+      inneedcontent: "",
+      coverphotoURL: "",
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
       heartCount: 0,
@@ -183,8 +185,10 @@ function CreateNewProject() {
         />
 
         <p className="text-3xl">Content</p>
-        <Loader show={uploading} />
-        {uploading && <h3>{progress}% uploading...</h3>}
+        <div className="flex flex-row">
+            <Loader show={uploading} />
+            {uploading && <h3 className="mt-auto">{progress}% uploading...</h3>}
+        </div>
         <div className="border">
         <ReactQuill theme="snow"
                     modules={modules}

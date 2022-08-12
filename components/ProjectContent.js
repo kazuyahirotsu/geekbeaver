@@ -7,6 +7,8 @@ import { useContext, useState } from 'react';
 import { UserContext } from '../lib/context';
 import Editor from '../components/Editor'
 import Comments from '../components/Comments';
+import DeleteButton from '../components/DeleteButton';
+
 
 
 // UI component for main project content
@@ -62,12 +64,13 @@ export default function ProjectContent({ project, comments}) {
         {/* edit button for admin user */}
         {currentUser?.uid === project.uid && !projectedit &&(
           <div className="text-right">
-              <button className="btn btn-info" onClick={()=>setProjectEdit(true)}>Edit Project</button>
+              <button className="btn btn-info mr-1" onClick={()=>setProjectEdit(true)}>✏️</button>
+              <DeleteButton deleteRef={projectRef} project={true} username={username}/>
           </div>
         )}
         {currentUser?.uid === project.uid && projectedit &&(
           <div className="text-right">
-              <button className="btn btn-info" onClick={()=>setProjectEdit(false)}>Edit Done</button>
+              <button className="btn btn-outline btn-info" onClick={()=>setProjectEdit(false)}>✏️</button>
           </div>
         )}
 
