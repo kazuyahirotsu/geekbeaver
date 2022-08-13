@@ -86,11 +86,10 @@ export default function Home(props) {
       
         <ProjectFeed projects={projects} />
 
-        {!loading && !projectsEnd && <button onClick={getMoreProjects} className="btn btn-wide mx-auto mb-10">Load more</button>}
+        {!loading && !projectsEnd && <button onClick={getMoreProjects} className="btn btn-wide mx-auto mb-10 mt-5">Load more</button>}
         <div className="mx-auto">
-        <Loader show={loading} className="mx-auto" />
-            </div>
-        
+          <Loader show={loading} className="mx-auto" />
+        </div>
 
         {projectsEnd && <p className="text-center mb-10">You have reached the end!</p>}
       </div>

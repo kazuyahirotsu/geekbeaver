@@ -58,7 +58,7 @@ function Comment({ comment_slow, currentUser, parentUid, parentProjectSlug, pare
             <a>By <strong className="text-info">@{comment.username}</strong></a>
           </Link>
 
-          <p className="text-right">{createdAt.toISOString()}</p>
+          <p className="text-right">{createdAt.toLocaleString()}</p>
         </span>
 
       <Editor defaultValue={comment.comment} contentRef={commentRef} edit={edit} comment={true}/>

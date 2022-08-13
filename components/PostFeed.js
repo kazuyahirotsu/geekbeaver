@@ -68,7 +68,7 @@ function PostItem({ post_slow, admin = false , currentUser, mentionProject }) {
           </Link>
           </div>
 
-          <p className="">{createdAt.toISOString()}</p>
+          <p className="">{createdAt.toLocaleString()}</p>
         </span>
 
         <Editor defaultValue={post.content} project={post} contentRef={postRef} edit={edit}/>

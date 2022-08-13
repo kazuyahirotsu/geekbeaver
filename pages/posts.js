@@ -85,7 +85,7 @@ export default function Posts(props) {
       
         <PostFeed posts={posts} mentionProject={true} />
 
-        {!loading && !postsEnd && <button onClick={getMorePosts} className="btn btn-wide mx-auto mb-10">Load more</button>}
+        {!loading && !postsEnd && <button onClick={getMorePosts} className="btn btn-wide mx-auto mb-10 mt-5">Load more</button>}
 
         <div className="mx-auto">
           <Loader show={loading} className="mx-auto" />
