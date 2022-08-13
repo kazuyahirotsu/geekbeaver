@@ -1,9 +1,8 @@
 import ProjectFeed from '../components/ProjectFeed';
 import Metatags from '../components/Metatags';
 import Loader from '../components/Loader';
-import { firestore, projectToJSON, getIt } from '../lib/firebase';
-import { Timestamp, query, where, orderBy, limit, collectionGroup, getDocs, startAfter, getFirestore } from 'firebase/firestore';
-
+import { projectToJSON } from '../lib/firebase';
+import { Timestamp, query, orderBy, limit, collectionGroup, getDocs, startAfter, getFirestore } from 'firebase/firestore';
 import { useState } from 'react';
 import Link from 'next/link';
 

@@ -1,23 +1,14 @@
-import styles from '../../styles/Admin.module.css';
 import AuthCheck from '../../components/AuthCheck';
-import ProjectFeed from '../../components/ProjectFeed';
-import Editor from '../../components/Editor'
 import { UserContext } from '../../lib/context';
-import { firestore, auth } from '../../lib/firebase';
-import { serverTimestamp, query, collection, orderBy, getFirestore, setDoc, doc, getDoc } from 'firebase/firestore';
-
-import { useEffect, useState, useCallback, useContext, useRef, useMemo } from 'react';
+import {  auth } from '../../lib/firebase';
+import { serverTimestamp, getFirestore, setDoc, doc } from 'firebase/firestore';
+import { useState, useContext, useRef, useMemo } from 'react';
 import { useRouter } from 'next/router';
-
-import { useCollection } from 'react-firebase-hooks/firestore';
-import kebabCase from 'lodash.kebabcase';
 import toast from 'react-hot-toast';
-import debounce from 'lodash.debounce';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage, STATE_CHANGED } from '../../lib/firebase';
 import imageCompression from 'browser-image-compression';
 import Loader from '../../components/Loader';
-
 import dynamic from 'next/dynamic';
 const ReactQuill = dynamic(
   async () => {

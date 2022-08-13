@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import ReactMarkdown from 'react-markdown';
 import Editor from '../components/Editor'
 
 // UI component for main post content

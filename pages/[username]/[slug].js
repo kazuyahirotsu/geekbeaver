@@ -1,17 +1,8 @@
-import styles from '../../styles/Project.module.css';
 import ProjectContent from '../../components/ProjectContent';
-import HeartButton from '../../components/HeartButton';
-import AuthCheck from '../../components/AuthCheck';
 import Metatags from '../../components/Metatags';
 import { UserContext } from '../../lib/context';
-import { firestore, getUserWithUsername, projectToJSON, auth } from '../../lib/firebase';
-import { serverTimestamp, doc, getDocs, getDoc, setDoc, collectionGroup, query, limit, getFirestore, collection, where, orderBy, updateDoc, increment } from 'firebase/firestore';
-import { useForm } from 'react-hook-form';
-import ImageUploader from '../../components/ImageUploader';
-import { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-
-import Link from 'next/link';
+import { getUserWithUsername, projectToJSON } from '../../lib/firebase';
+import { doc, getDocs, getDoc, query, limit, getFirestore, collection, orderBy, updateDoc, increment } from 'firebase/firestore';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 import { useEffect, useContext } from 'react';
 import toast from 'react-hot-toast';
@@ -19,11 +10,9 @@ import PostFeed from '../../components/PostFeed';
 import Editor from '../../components/Editor';
 import kebabCase from 'lodash.kebabcase';
 import { containJapanese } from '../../lib/hooks';
-import Comments from '../../components/Comments';
 
-// SSG
-export async function getStaticProps({ params }) {
-  const { username, slug:slug_original } = params;
+export async function getServerSideProps({ query: urlQuery }) {
+  const { username, slug:slug_original } = urlQuery;
   
   const slug = containJapanese(slug_original) ? encodeURI(kebabCase(slug_original)):slug_original;
   const userDoc = await getUserWithUsername(username);
@@ -42,15 +31,13 @@ export async function getStaticProps({ params }) {
 
     const postsQuery = query(
       collection(getFirestore(), userDoc.ref.path, 'projects', slug, 'posts'),
-      orderBy('createdAt', 'desc'),
-      limit(5)
+      orderBy('createdAt', 'desc')
     );
     posts = (await getDocs(postsQuery)).docs.map(projectToJSON);
 
     const commentsQuery = query(
       collection(getFirestore(), userDoc.ref.path, 'projects', slug, 'comments'),
-      orderBy('createdAt', 'desc'),
-      limit(5)
+      orderBy('createdAt', 'desc')
     );
     comments = (await getDocs(commentsQuery)).docs.map(projectToJSON);
 
@@ -58,34 +45,9 @@ export async function getStaticProps({ params }) {
 
   return {
     props: { project, path, posts, comments },
-    revalidate: 1,
   };
 }
 
-export async function getStaticPaths() {
-  // Improve my using Admin SDK to select empty docs
-  const q = query(
-    collectionGroup(getFirestore(), 'projects'),
-    limit(20)
-  )
-  const snapshot = await getDocs(q);
-
-  const paths = snapshot.docs.map((doc) => {
-    const { slug, username } = doc.data();
-    return {
-      params: { username, slug },
-    };
-  });
-
-  return {
-    // must be in this format:
-    // paths: [
-    //   { params: { username, slug }}
-    // ],
-    paths,
-    fallback: 'blocking',
-  };
-}
 
 // shows edit project and add post UI for the owner
 export default function Project(props) {

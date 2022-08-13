@@ -1,5 +1,5 @@
-import { getUserWithUsername, projectToJSON, firestore } from '../../lib/firebase';
-import { query, collection, where, getDocs, limit, orderBy, getFirestore, collectionGroup } from 'firebase/firestore';
+import { getUserWithUsername, projectToJSON } from '../../lib/firebase';
+import { query, where, getDocs, limit, orderBy, getFirestore, collectionGroup } from 'firebase/firestore';
 import UserProfile from '../../components/UserProfile';
 import Metatags from '../../components/Metatags';
 import PostFeed from '../../components/PostFeed';
@@ -30,7 +30,6 @@ export async function getServerSideProps({ query: urlQuery }) {
       collectionGroup(getFirestore(), 'posts'),
       where('username','==',user.username),
       orderBy('createdAt', 'desc'),
-      limit(5)
     );
     posts = (await getDocs(postsQuery)).docs.map(projectToJSON);
   }
@@ -43,7 +42,7 @@ export async function getServerSideProps({ query: urlQuery }) {
 export default function UserProfilePage({ user, posts }) {
   return (
     <main>
-      <Metatags title={user.username} description={`${user.username}'s public profile`} />
+      <Metatags title={user.username} description={`${user.username}'s posts page`} />
       <UserProfile user={user} />
 
       <div className="flex w-1/2 mx-auto my-10">

@@ -1,9 +1,8 @@
 import PostFeed from '../components/PostFeed';
 import Metatags from '../components/Metatags';
 import Loader from '../components/Loader';
-import { firestore, projectToJSON, getIt } from '../lib/firebase';
-import { Timestamp, query, where, orderBy, limit, collectionGroup, getDocs, startAfter, getFirestore } from 'firebase/firestore';
-
+import { projectToJSON } from '../lib/firebase';
+import { Timestamp, query, orderBy, limit, collectionGroup, getDocs, startAfter, getFirestore } from 'firebase/firestore';
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -60,7 +59,7 @@ export default function Posts(props) {
 
   return (
     <main>
-      <Metatags title="Home Page" description="Get the latest posts on our site" />
+      <Metatags title="Posts Page" description="Get the latest posts on our site" />
       <div className="flex w-1/2 mx-auto my-10">
         <div className="grid h-10 flex-grow card place-items-center">
           <Link href="/">
