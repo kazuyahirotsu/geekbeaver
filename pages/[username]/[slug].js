@@ -58,7 +58,7 @@ export async function getStaticProps({ params }) {
 
   return {
     props: { project, path, posts, comments },
-    revalidate: 100,
+    revalidate: 1,
   };
 }
 
