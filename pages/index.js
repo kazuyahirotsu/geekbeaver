@@ -78,8 +78,9 @@ export default function Home(props) {
       <div className="flex flex-col w-screen">
         <div className="card shadow-xl bg-accent text-primary-content md:mx-10 mx-1">
           <div className="card-body">
-            <p>Welcome! This app is for project lovers.</p>
-            <p>Sign up for an 👨‍🎤 account, ✍️ write projects and posts, then 💞 heart content created by other users.</p>
+            <p>moreprojects.devへようこそ！</p>
+            <p>プロジェクトを共有してフィードバックをもらおう</p>
+            <p>ポストをプロジェクトのページに追加して最新の状況をシェアしよう</p>
           </div>
         </div>
       

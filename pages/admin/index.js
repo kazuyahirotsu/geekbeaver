@@ -189,9 +189,13 @@ function CreateNewProject() {
         </ReactQuill>
         </div>
         <div className="text-right">
-          <button type="submit" className="btn btn-accent" onClick={()=>createProject({content:value, title:title, slug:slug})} >
+          {title
+          ?<button type="submit" className="btn btn-accent" onClick={()=>createProject({content:value, title:title, slug:slug})} >
           Post Project
           </button>
+          :<button type="submit" className="btn btn-accent" disabled="disabled" onClick={()=>createProject({content:value, title:title, slug:slug})} >
+          Post Project
+          </button>}
         </div>
       </div>
     </div>
