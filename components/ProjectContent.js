@@ -34,7 +34,7 @@ export default function ProjectContent({ project, comments}) {
             By <strong className="text-info"> @{project.username}</strong>
               </a>
             </Link>
-            <p className="text-right">{createdAt.toISOString()}</p>
+            <p className="text-right">{createdAt.toLocaleString()}</p>
           </div>
         </>
         }

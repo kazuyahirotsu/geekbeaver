@@ -14,7 +14,7 @@ export default function PostContent({ post }) {
         <Link href={`/${post.username}/`}>
           <a className="text-info">@{post.username}</a>
         </Link>{' '}
-        {createdAt.toISOString()}
+        {createdAt.toLocaleString()}
       </span>
       <Editor defaultValue={post.content} edit={false}/>
     </div>
