@@ -1,9 +1,8 @@
 import PostFeed from '../components/PostFeed';
 import Metatags from '../components/Metatags';
 import Loader from '../components/Loader';
-import { firestore, projectToJSON, getIt } from '../lib/firebase';
-import { Timestamp, query, where, orderBy, limit, collectionGroup, getDocs, startAfter, getFirestore } from 'firebase/firestore';
-
+import { projectToJSON } from '../lib/firebase';
+import { Timestamp, query, orderBy, limit, collectionGroup, getDocs, startAfter, getFirestore } from 'firebase/firestore';
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -60,7 +59,7 @@ export default function Posts(props) {
 
   return (
     <main>
-      <Metatags title="Home Page" description="Get the latest posts on our site" />
+      <Metatags title="Posts Page" description="Get the latest posts on our site" />
       <div className="flex w-1/2 mx-auto my-10">
         <div className="grid h-10 flex-grow card place-items-center">
           <Link href="/">
@@ -78,8 +77,9 @@ export default function Posts(props) {
       <div className="flex flex-col w-screen">
         <div className="card shadow-xl bg-accent text-primary-content md:mx-10 mx-1">
           <div className="card-body">
-            <p>Welcome! This app is for project lovers.</p>
-            <p>Sign up for an 👨‍🎤 account, ✍️ write projects and posts, then 💞 heart content created by other users.</p>
+            <p>moreprojects.devへようこそ！</p>
+            <p>プロジェクトを共有してフィードバックをもらおう</p>
+            <p>ポストをプロジェクトのページに追加して最新の状況をシェアしよう</p>
           </div>
         </div>
       

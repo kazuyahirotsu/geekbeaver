@@ -6,8 +6,6 @@ export default function ProjectFeed({ projects, admin }) {
 
 function ProjectItem({ project, admin = false }) {
   // Naive method to calc word count and read time
-  const wordCount = project?.content.trim().split(/\s+/g).length;
-  const minutesToRead = (wordCount / 100 + 1).toFixed(0);
 
   return (
     <div className="card shadow-xl bg-base-100 md:mx-10 mx-1 my-5">

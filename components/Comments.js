@@ -1,6 +1,4 @@
 import Link from 'next/link';
-import ReactMarkdown from 'react-markdown';
-import HeartButton from '../components/HeartButton';
 import AuthCheck from '../components/AuthCheck';
 import { doc, getFirestore } from 'firebase/firestore';
 import { useDocumentData } from 'react-firebase-hooks/firestore';

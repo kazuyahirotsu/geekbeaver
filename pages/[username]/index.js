@@ -1,5 +1,5 @@
-import { getUserWithUsername, projectToJSON, firestore } from '../../lib/firebase';
-import { query, collection, where, getDocs, limit, orderBy, getFirestore } from 'firebase/firestore';
+import { getUserWithUsername, projectToJSON } from '../../lib/firebase';
+import { query, collection, getDocs, limit, orderBy, getFirestore } from 'firebase/firestore';
 import UserProfile from '../../components/UserProfile';
 import Metatags from '../../components/Metatags';
 import ProjectFeed from '../../components/ProjectFeed';
@@ -29,7 +29,6 @@ export async function getServerSideProps({ query: urlQuery }) {
     const projectsQuery = query(
       collection(getFirestore(), userDoc.ref.path, 'projects'),
       orderBy('createdAt', 'desc'),
-      limit(5)
     );
     projects = (await getDocs(projectsQuery)).docs.map(projectToJSON);
   }

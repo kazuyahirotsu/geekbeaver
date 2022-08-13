@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import dynamic from 'next/dynamic';
 const ReactQuill = dynamic(
   async () => {
@@ -11,7 +11,7 @@ const ReactQuill = dynamic(
   }
 );
 import 'react-quill/dist/quill.snow.css';
-import { serverTimestamp, doc, deleteDoc, updateDoc, getFirestore, setDoc } from 'firebase/firestore';
+import { serverTimestamp, updateDoc, setDoc } from 'firebase/firestore';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
@@ -227,7 +227,8 @@ export default function Editor({ defaultValue, defaultTitle, contentRef, edit=fa
             <div className="text-right">
               <button type="submit" className="btn btn-success mt-1" onClick={()=>{
                 createContent({content:value, contentRef:contentRef})
-                router.reload()}} > {/* // todo */}
+                router.reload()
+                }} > {/* // todo */}
               Add new post
               </button>
             </div>

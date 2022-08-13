@@ -1,11 +1,9 @@
-import { auth, firestore, googleAuthProvider, githubAuthProvider, twitterAuthProvider } from '../lib/firebase';
+import { auth, googleAuthProvider, githubAuthProvider, twitterAuthProvider } from '../lib/firebase';
 import { doc, writeBatch, getDoc, getFirestore } from 'firebase/firestore';
-import { signInWithPopup, signInAnonymously, signOut } from 'firebase/auth';
+import { signInWithPopup, signOut } from 'firebase/auth';
 import { UserContext } from '../lib/context';
 import Metatags from '../components/Metatags';
 import { useRouter } from 'next/router';
-
-
 import { useEffect, useState, useCallback, useContext } from 'react';
 import debounce from 'lodash.debounce';
 
@@ -87,7 +85,7 @@ function UsernameForm() {
 
     // Commit both docs together as a batch write.
     const batch = writeBatch(getFirestore());
-    batch.set(userDoc, { username: formValue, photoURL: user.photoURL, displayName: user.displayName, profile: "", uid: user.uid });
+    batch.set(userDoc, { username: formValue, photoURL: user.photoURL, displayName: user.displayName, profile: "<p>ここで自己紹介をしよう<p>", uid: user.uid });
     batch.set(usernameDoc, { uid: user.uid });
 
     await batch.commit();

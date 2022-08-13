@@ -1,5 +1,5 @@
-import { getDoc, doc, getFirestore } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { doc, getFirestore } from 'firebase/firestore';
+import { useState } from 'react';
 import Editor from '../components/Editor';
 import { useContext } from 'react';
 import { UserContext } from '../lib/context';
