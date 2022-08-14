@@ -33,11 +33,11 @@ export default function Navbar() {
           <ul tabIndex="0" className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                 <li>
                   <Link href="/admin">
-                    <button className="">create new project</button>
+                    <button className="bg-primary text-white mb-1">create new project</button>
                   </Link>
                 </li>
                 <li className="">
-                  <button onClick={signOutNow} className="">Sign Out</button>
+                  <button onClick={signOutNow} className="bg-neutral text-white">sign out</button>
                 </li>
                 <li>
                   <Link href={`/${username}`}>
@@ -88,12 +88,12 @@ export default function Navbar() {
               <ul tabIndex="0" className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                 <li>
                   <Link href="/enter">
-                    <button className="bg-primary text-white">create new project</button>
+                    <button className="bg-primary text-white mb-1">create new project</button>
                   </Link>
                 </li>
                 <li className="">
                   <Link href="/enter">
-                    <button className="">Log in</button>
+                    <button className="bg-neutral text-white">log in</button>
                   </Link>
                 </li>
               </ul>
@@ -111,7 +111,7 @@ export default function Navbar() {
             </li>
             <li className="">
               <Link href="/enter">
-                <button className="btn btn-primary text-white">Log in</button>
+                <button className="btn text-white">Log in</button>
               </Link>
             </li>
           </ul>
